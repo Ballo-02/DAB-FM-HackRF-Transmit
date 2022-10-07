@@ -94,7 +94,8 @@ Usage: sudo python3 main.py [options]
 -h          help menu
 '''
 if __name__=="__main__":
-    if (sys.argv[1] == '-h'):
+    length=(len(sys.argv))-1
+    if (sys.argv[length] == '-h'):
         print(help)
     else:
         main()
