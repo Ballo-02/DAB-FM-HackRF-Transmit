@@ -3,7 +3,7 @@ import sys
 
 def mp3tofifo(mp3_name, sample_rate, bit_rate):
     sample_rate_short = str(int(sample_rate)/1000)
-    command = (f"xterm -hold -e 'ffmpeg -re -i {mp3_name}.mp3 -ar {sample_rate} -f wav - |./../toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./one.fifo'")
+    command = (f"xterm -hold -e 'sudo ffmpeg -re -i {mp3_name}.mp3 -ar {sample_rate} -f wav - |./../toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./first.fifo'")
     os.system(command)
 if __name__=="__main__":
     mp3_name = 'uranium'

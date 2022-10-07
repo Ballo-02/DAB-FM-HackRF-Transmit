@@ -2,9 +2,8 @@ import sys
 import os
 
 def config():
-    command = (f"xterm -hold -e './../ODR-DabMod/odr-dabmod _c config_file.ini'")
+    command = (f"xterm -hold -e 'sudo ./../ODR-DabMod/odr-dabmod config_file.ini'")
     os.system(command)
-
 if __name__=="__main__":
     channel = '13C'
     length=len(sys.argv)

@@ -4,7 +4,7 @@ import os
 
 def mp3tofifo(mp3_name, sample_rate, bit_rate):
     sample_rate_short = sample_rate/1000
-    result = (subprocess.Popen('mkfifo ./one.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    result = (subprocess.Popen('mkfifo ./first.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     bash_script = open('launch.sh','a')
     bash_script.write(f"""#!/bin/sh
 /usr/bin/python3 com1.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
