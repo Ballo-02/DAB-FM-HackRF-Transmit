@@ -19,7 +19,27 @@ https://en.y2mate.is/68/youtube-to-mp3.html - Tool used to convert uranium mp3 f
 https://www.youtube.com/watch?v=2ANI6oj8p2M - Uranium fever song used for testing
 
 
-## What's in this repository?
+## How to use?
+
+### `src/linux/main.py` and `src/windows/main.py`
+#### `Linux`
+
+Usage: sudo python3 main.py [options]
+
+ - -i          mp3 name (without .mp3)
+ - -s          sample rate
+ - -b          bitrate
+ - -ch         channel (changes the channel permentally until next change)
+ - -id         channel id
+ - -l          label
+ - -h          help menu
+ 
+
+Example
+ - python3 windows/src/main.py
+ - python3 linux/src/main.py -ch 12C -b 128 -s 48000 -id 1 -l 'hello world' -i 'uranium'
+ 
+ ## What's in this repository?
 
 ### `src/linux/src/main.py`
 The main script to deploy 2 DAB and 2 FM signals with the default values
@@ -44,25 +64,4 @@ Conatians the configeration for transmitting the DAB station which can be edited
 
 ### `src/linux/src/uranium.mp3`
 A mp3 file containing the song 'Uranium Fever' as a default test sound 
-
-## How to use?
-
-### `src/linux/main.py` and `src/windows/main.py`
-#### `Linux`
-
-Usage: sudo python3 main.py [options]
-
- - -i          mp3 name (without .mp3)
- - -s          sample rate
- - -b          bitrate
- - -ch         channel (changes the channel permentally until next change)
- - -id         channel id
- - -l          label
- - -h          help menu
- 
-
-Example
- - python3 windows/src/main.py
- - python3 linux/src/main.py -ch 12C -b 128 -s 48000 -id 1 -l 'hello world' -i 'uranium'
- 
  
