@@ -9,6 +9,19 @@ def config(channel):
     """
     #Pipes in the given fifo stream and chooses which ensamble to broadcast on using the configeration file provided. This is then outputted on an 
     #xterm terminal
+    if (channel != '13C'):
+        print('test')
+        # Read in the file
+        with open('config_file.ini', 'r') as file :
+            filedata = file.read()
+
+        # Replace the target string
+        new_channel = (f'channel={channel}')
+        filedata = filedata.replace('channel=13C', new_channel)
+
+        # Write the file out again
+        with open('config_file.ini', 'w') as file:
+            file.write(filedata)
     command = (f"xterm -hold -e 'sudo ./../ODR-DabMod/odr-dabmod config_file.ini'")
     os.system(command)
 if __name__=="__main__":

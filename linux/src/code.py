@@ -45,7 +45,7 @@ def transmit(channel):
     #Write the command into a launch.sh script so multiple xterms can be run at once
     bash_script = open('launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 com3.py {channel} """) #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 com3.py -ch {channel} """) #Create python launch sript inside launch shell script passing desired params
     bash_script.close()
 def main():
     """
@@ -59,14 +59,6 @@ def main():
     label = 'Skyships'
     station_id = 1
     channel = '13C'
-    help = '''
-Usage: sudo python3 main.py [options]
-
--i          mp3 name (without .mp3)
--s          sample rate
--b          bitrate
--h          help menu
-'''
     #If parameters are passed to the script this will take them in and change them values
     for i in range(length):
         if (sys.argv[i] == '-i'):
@@ -81,6 +73,8 @@ Usage: sudo python3 main.py [options]
             station_id = sys.argv[i+1]
         elif (sys.argv[i] == '-l'):
             label = sys.argv[i+1]
+        elif (sys.argv[i] == '-ch'):
+            channel = sys.argv[i+1]
         else:
             print(help)
     mp3tofifo(mp3_name, sample_rate, bit_rate)
@@ -88,5 +82,20 @@ Usage: sudo python3 main.py [options]
     transmit(channel)
     os.system('sh launch.sh') #Launches the final script
     result2 = (subprocess.Popen('rm launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
+help = '''
+Usage: sudo python3 main.py [options]
+
+-i          mp3 name (without .mp3)
+-s          sample rate
+-b          bitrate
+-ch         channel (changes the channel permentally until next change)
+-id         channel id
+-l          label
+-h          help menu
+'''
 if __name__=="__main__":
-    main()
+    if (sys.argv[1] == '-h'):
+        print(help)
+    else:
+        main()
+
