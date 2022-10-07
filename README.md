@@ -47,18 +47,18 @@ A mp3 file containing the song 'Uranium Fever' as a default test sound
 
 ## How to use?
 
-### `src/linux/main.py` and `src/linux/main.py`
-python3 main.py target
+### `src/linux/main.py` and `src/windows/main.py`
+#### `Linux`
 
-[Optional] sudo python3 main.py [options]
+Usage: sudo python3 main.py [options]
 
--i          mp3 name (without .mp3)
--s          sample rate
--b          bitrate
--ch         channel (changes the channel permentally until next change)
--id         channel id
--l          label
--h          help menu
+ - -i          mp3 name (without .mp3)
+ - -s          sample rate
+ - -b          bitrate
+ - -ch         channel (changes the channel permentally until next change)
+ - -id         channel id
+ - -l          label
+ - -h          help menu
  
 
 Example
