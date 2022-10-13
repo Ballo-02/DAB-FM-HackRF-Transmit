@@ -1,3 +1,11 @@
 add toolame compile directory
 install apt-get install hackrf
 add hackrf_info for diagnostic
+
+when creating crc-adabmux
+-edit DabMux.cpp
+add '#include <sys/resource.h>'
+
+sudo apt-get install libfec-dev
+before make
+
