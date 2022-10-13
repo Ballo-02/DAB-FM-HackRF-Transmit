@@ -1,1 +1,3 @@
 add toolame compile directory
+install apt-get install hackrf
+add hackrf_info for diagnostic
