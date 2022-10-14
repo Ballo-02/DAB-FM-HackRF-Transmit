@@ -26,7 +26,7 @@ import time
 
 
 
-class try2(gr.top_block):
+class fmtx1(gr.top_block):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -39,6 +39,7 @@ class try2(gr.top_block):
         self.rf_samp_rate = rf_samp_rate = 10240000
         self.quad_rate = quad_rate = 256000
         self.if_samp_rate = if_samp_rate = 1024000
+        self.freq_1 = freq_1 = 93.4e6
 
         ##################################################
         # Blocks
@@ -62,7 +63,7 @@ class try2(gr.top_block):
             args="numchan=" + str(1) + " " + 'hackrf=0000000000000000874461dc25a38957'
         )
         self.osmosdr_sink_0.set_sample_rate(rf_samp_rate)
-        self.osmosdr_sink_0.set_center_freq(93.4e6, 0)
+        self.osmosdr_sink_0.set_center_freq(freq_1, 0)
         self.osmosdr_sink_0.set_freq_corr(0, 0)
         self.osmosdr_sink_0.set_gain(50, 0)
         self.osmosdr_sink_0.set_if_gain(0, 0)
@@ -127,10 +128,17 @@ class try2(gr.top_block):
     def set_if_samp_rate(self, if_samp_rate):
         self.if_samp_rate = if_samp_rate
 
+    def get_freq_1(self):
+        return self.freq_1
+
+    def set_freq_1(self, freq_1):
+        self.freq_1 = freq_1
+        self.osmosdr_sink_0.set_center_freq(self.freq_1, 0)
 
 
 
-def main(top_block_cls=try2, options=None):
+
+def main(top_block_cls=fmtx1, options=None):
     tb = top_block_cls()
 
     def sig_handler(sig=None, frame=None):

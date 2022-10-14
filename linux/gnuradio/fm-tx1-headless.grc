@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: no_gui
     hier_block_src_path: '.:'
-    id: try2
+    id: fmtx1
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -33,6 +33,18 @@ options:
     state: enabled
 
 blocks:
+- name: freq_1
+  id: variable
+  parameters:
+    comment: ''
+    value: 93.4e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 92.0]
+    rotation: 0
+    state: true
 - name: if_samp_rate
   id: variable
   parameters:
@@ -426,7 +438,7 @@ blocks:
     corr7: '0'
     corr8: '0'
     corr9: '0'
-    freq0: 93.4e6
+    freq0: freq_1
     freq1: 100e6
     freq10: 100e6
     freq11: 100e6
