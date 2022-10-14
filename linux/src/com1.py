@@ -18,7 +18,7 @@ def mp3tofifo(mp3_name, sample_rate, bit_rate):
     os.system(command)
 if __name__=="__main__":
     """
-        Take in the paramters and runs mp3tififo funtion
+        Take in the paramters and runs mp3tofifo funtion
     """
     #Creates default values
     mp3_name = 'uranium'

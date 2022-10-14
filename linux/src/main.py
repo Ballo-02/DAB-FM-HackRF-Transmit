@@ -1,8 +1,9 @@
 import sys
 import subprocess
 import os
+import time
 
-def mp3tofifo(mp3_name, sample_rate, bit_rate):
+def mp3tofifo_DAB(mp3_name, sample_rate, bit_rate):
     """
        mp3tofifo- Gets a mp3 file and converts it with passed parameters to a .wav file that is then piped to an output. The tool called toolame which
        converts the the given stream into an mp2 format again with passed parameters to allow the signal to be transmitted correctly which is finally
@@ -20,7 +21,7 @@ def mp3tofifo(mp3_name, sample_rate, bit_rate):
 /usr/bin/python3 com1.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
     bash_script.close()
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
-def config(bit_rate, station_id, label):
+def config_DAB(bit_rate, station_id, label):
     """
        config- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
        command and is outputed on a specifed fifo pipe.
@@ -36,7 +37,7 @@ def config(bit_rate, station_id, label):
 /usr/bin/python3 com2.py -b {bit_rate} -id {station_id} -l {label} &""") #Create python launch sript inside launch shell script passing desired params
 
 
-def transmit(channel):
+def transmit_DAB(channel):
     """
        config- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
 
@@ -45,8 +46,25 @@ def transmit(channel):
     #Write the command into a launch.sh script so multiple xterms can be run at once
     bash_script = open('launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 com3.py -ch {channel} """) #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 com3.py -ch {channel}""") #Create python launch sript inside launch shell script passing desired params
     bash_script.close()
+
+
+def transmit_FM_1(frequency, sample_rate, mp3_name):
+    bash_script = open('launch.sh', 'a')
+    bash_script.write(f"""
+/usr/bin/python3 com4.py -f {frequency} -s {sample_rate} -i {mp3_name} &""") #Create python launch sript inside launch shell script passing desired params
+    bash_script.close()
+
+
+def transmit_FM_2(frequency):
+    bash_script = open('launch.sh', 'a')
+    bash_script.write(f"""
+/usr/bin/python3 fmtx2.py -ch {frequency} """) #Create python launch sript inside launch shell script passing desired params
+    bash_script.close()
+
+
+
 def main():
     """
         main- Take in the paramters and displays help script if needed
@@ -59,6 +77,8 @@ def main():
     label = 'Skyships'
     station_id = 1
     channel = '13C'
+    frequency = '93.4'
+    frequency2 = '94.4'
     #If parameters are passed to the script this will take them in and change them values
     for i in range(length):
         if (sys.argv[i] == '-i'):
@@ -75,13 +95,18 @@ def main():
             label = sys.argv[i+1]
         elif (sys.argv[i] == '-ch'):
             channel = sys.argv[i+1]
+        elif (sys.argv[i] == '-f'):
+            frequency = sys.argv[i+1]
         else:
             print(help)
-    mp3tofifo(mp3_name, sample_rate, bit_rate)
-    config(bit_rate, station_id, label)
-    transmit(channel)
+    transmit_FM_1(frequency, sample_rate, mp3_name)
+    mp3tofifo_DAB(mp3_name, sample_rate, bit_rate)
+    config_DAB(bit_rate, station_id, label)
+    transmit_DAB(channel)
     os.system('sh launch.sh') #Launches the final script
     result2 = (subprocess.Popen('rm launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
+
+
 help = '''
 Usage: sudo python3 main.py [options]
 
