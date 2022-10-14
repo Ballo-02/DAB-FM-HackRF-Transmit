@@ -11,3 +11,8 @@ before make
 
 sudo apt-get install libhackrf-dev
 before make of soapyhackrf
+
+
+toolame 
+INLINE void putbits --> void putbits in bistream.c
+extern INLINE void putbits (Bit_stream_struc *, unsigned int, int);  --> void putbits (Bit_stream_struc *, unsigned int, int); in bitsream.h
