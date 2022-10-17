@@ -30,7 +30,7 @@ def transmit_FM_1(frequency1,frequency2, sample_rate, mp3_name1, mp3name2):
     os.system(command1)
     command2 = (f"xterm -e 'sudo mpg123 -r{sample_rate} -m -s {mp3_name2}.mp3 > stream2.fifo'")
     os.system(command2)
-    command2 = (f"xterm -hold -e 'sudo /usr/bin/python3 fmtx2.py'")
+    command2 = (f"xterm -hold -e 'sudo /usr/bin/python3 fmtx2_real.py'")
     os.system(command2)
 if __name__=="__main__":
     """
