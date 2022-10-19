@@ -14,14 +14,14 @@ def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    result = (subprocess.Popen('mkfifo ./../pipes/f1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    result = (subprocess.Popen('mkfifo ./pipes/f1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     #Writes the command into a launch.sh script so multiple xterms can be run at once
     bash_script = open('src/launch.sh','a')
     bash_script.write(f"""
 /usr/bin/python3 src/convert1.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
     bash_script.close()
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
-def params_DAB_1(bit_rate, station_id, label):
+def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
     """
        params_DAB_1- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
        command and is outputed on a specifed fifo pipe.
@@ -29,12 +29,15 @@ def params_DAB_1(bit_rate, station_id, label):
        bit_rate - The bit rate which the frequency is wanted to be transmitted on
        station_id - Gives the station ID that is wanting to be used
        label - Gives the label wanting to be used
+       ensID - Ensemble ID
+       ensLabel - Ensamble Label
+       service - Service ID
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
-    result = (subprocess.Popen('mkfifo ./../pipes/s1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    result = (subprocess.Popen('mkfifo ./pipes/s1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3  src/params1.py -b {bit_rate} -id {station_id} -l {label} &""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3  src/params1.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""") #Create python launch sript inside launch shell script passing desired params
 
 
 def transmit_DAB_1(channel, dab):
@@ -65,14 +68,14 @@ def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    result = (subprocess.Popen('mkfifo ./../pipes/f2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    result = (subprocess.Popen('mkfifo ./pipes/f2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     #Writes the command into a launch.sh script so multiple xterms can be run at once
     bash_script = open('src/launch.sh','a')
     bash_script.write(f"""
 /usr/bin/python3 src/convert2.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
     bash_script.close()
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
-def params_DAB_2(bit_rate, station_id, label):
+def params_DAB_2(bit_rate,station_id,label, ensID, ensLabel, service):
     """
        params_DAB_2- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
        command and is outputed on a specifed fifo pipe.
@@ -80,12 +83,15 @@ def params_DAB_2(bit_rate, station_id, label):
        bit_rate - The bit rate which the frequency is wanted to be transmitted on
        station_id - Gives the station ID that is wanting to be used
        label - Gives the label wanting to be used
+       ensID - Ensemble ID
+       ensLabel - Ensamble Label
+       service - Service ID
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
-    result = (subprocess.Popen('mkfifo ./../pipes/s2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    result = (subprocess.Popen('mkfifo ./pipes/s2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 src/params2.py -b {bit_rate} -id {station_id} -l {label} &""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/params2.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""")#Create python launch sript inside launch shell script passing desired params
 
 
 def transmit_DAB_2(channel):
@@ -222,7 +228,6 @@ def serial(fm, dab):
         if (dab >= 1):
             amount = [y.replace('0000000000000000', '') for y in amount]  #changes the serial sytax as ODR-DabMux can't use 0's
             dab1 = amount[3]
-            print(dab1)
             print(f'dab1- {dab1}')
             os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
             with open('src/temp/config_real1.ini', 'r') as file :
@@ -278,7 +283,7 @@ def serial(fm, dab):
         else:
             print('Error- Typed more than 2? (Not Capable yet)')
 
-def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2):
+def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
     """
         execute- Executes the specified function for FM and DAB
 
@@ -316,14 +321,14 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, s
     if (dab == '1'):
         print('starting 1 DAB radio')
         mp3tofifo_DAB_1(mp3_name3, sample_rate, bit_rate)
-        params_DAB_1(bit_rate, station_id1, label1)
+        params_DAB_1(bit_rate,station_id1,label1, ensID1, ensLabel1, service1)
         transmit_DAB_1(channel1, False)
     elif (dab == '2'):
         mp3tofifo_DAB_1(mp3_name3, sample_rate, bit_rate)
-        params_DAB_1(bit_rate, station_id1, label1)
+        params_DAB_1(bit_rate,station_id1,label1, ensID1, ensLabel1, service1)
         transmit_DAB_1(channel1, True)
         mp3tofifo_DAB_2(mp3_name4, sample_rate, bit_rate)
-        params_DAB_2(bit_rate, station_id2, label2)
+        params_DAB_2(bit_rate, station_id2,label2, ensID2, ensLabel2, service2)
         transmit_DAB_2(channel2)
         print("'starting 2 DAB radio's")
     elif  (dab == '0'):
@@ -335,7 +340,7 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, s
     result2 = (subprocess.Popen('sudo rm src/launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
 
 
-def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2):
+def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
     """
         full_settings- Takes in the values from 'values.txt'for effiency when -v is passed
 
@@ -371,9 +376,15 @@ def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_r
     label2 = result[19]
     channel1 = result[21]
     channel2 = result[23]
-    frequency1 = result[25]
-    frequency2 = result[27]
-    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2)
+    ensID1 = result[25]
+    ensID2 = result[27]
+    ensLabel1 = result[29]
+    ensLabel2 = result[31]
+    service1 = result[33]
+    service2 = result[35]
+    frequency1 = result[37]
+    frequency2 = result[39]
+    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 
 def main(fm, dab):
@@ -395,6 +406,12 @@ def main(fm, dab):
     frequency2 = '94.4'
     label1 = f'Skyships-{channel1}'
     label2 = f'Skyships-{channel2}'
+    ensID1 = '0xc000'
+    ensLabel1 = 'Skyships1'
+    service1 = '10'
+    ensID2 = '0xc000'
+    ensLabel2 = 'Skyships2'
+    service2 = '11'
     length= len(sys.argv)
 
     bash_script = open('src/launch.sh','a') #makes it into a bash scri[t]
@@ -433,10 +450,22 @@ def main(fm, dab):
             frequency1 = sys.argv[i+1]
         elif (sys.argv[i] == '-f2'):
             frequency2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-eid' or sys.argv[i] == '-eid1'):
+            ensID1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-eid2'):
+            ensID2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-el' or sys.argv[i] == '-el1'):
+            ensLabel1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-el2'):
+            ensLabel2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-sl' or sys.argv[i] == '-sl1'):
+            service1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-sl2'):
+            service2 = sys.argv[i+1]
     if (sys.argv[i] == '-v'): #use values.txt
-        full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2)
+        full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
     else:
-        execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2)
+        execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 
 

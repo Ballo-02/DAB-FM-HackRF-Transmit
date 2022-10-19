@@ -35,7 +35,7 @@ class fmtx1(gr.top_block):
         self.rf_samp_rate = rf_samp_rate = 10240000
         self.quad_rate = quad_rate = 256000
         self.if_samp_rate = if_samp_rate = 1024000
-        self.freq = freq = 
+        self.freq = freq = 64.4e6 
 
         ##################################################
         # Blocks

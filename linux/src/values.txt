@@ -44,13 +44,37 @@ Test1
 ,
 Test2
 ,
-# Ensamble ID 1
+# Ensamble Frequency 1
 ,
 12C
 ,
-# Ensamble ID 2
+# Ensamble Frequency 2
 ,
 13C
+,
+# Ensamble ID 1
+,
+0xc000
+,
+# Ensamble ID 2
+,
+0xc001
+,
+# Ensamble Label 1
+,
+Skyships1
+,
+# Ensamble Label 2
+,
+Skyships2
+,
+# Service ID 1
+,
+10
+,
+# Service ID 2
+,
+11
 ,
 ##--------------------------------FM Settings--------------------------------
 # Frequency 1
