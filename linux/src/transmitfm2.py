@@ -3,6 +3,13 @@ import os
 import time
 
 def transmit_FM_2(frequency2, sample_rate, mp3_name2):
+    """
+        transmit_FM_2- Transmits the FM signal twice with the chosen frequency, sample rate and what to play for both broadcasts
+
+        frequency2- What frequency the fm channel should be on
+        sample_rate2- The sample whichthe frequency is wanting to be on
+        mp3_name2- The mp3 file that is wanting to be played
+    """
     # Read in the file
     with open('src/temp/fmtx2_real.py', 'r') as file :
         filedata = file.read()

@@ -5,7 +5,7 @@ import time
 
 def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
     """
-       mp3tofifo- Gets a mp3 file and converts it with passed parameters to a .wav file that is then piped to an output. The tool called toolame which
+       mp3tofifo_DAB_1- Gets a mp3 file and converts it with passed parameters to a .wav file that is then piped to an output. The tool called toolame which
        converts the the given stream into an mp2 format again with passed parameters to allow the signal to be transmitted correctly which is finally
        passed to a given fifo pipe name in this case 'first.fifo' to alow the enxt process to take this steam
 
@@ -23,7 +23,7 @@ def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_1(bit_rate, station_id, label):
     """
-       config- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
+       params_DAB_1- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
        command and is outputed on a specifed fifo pipe.
 
        bit_rate - The bit rate which the frequency is wanted to be transmitted on
@@ -39,9 +39,10 @@ def params_DAB_1(bit_rate, station_id, label):
 
 def transmit_DAB_1(channel, dab):
     """
-       config- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
+       transmit_DAB_1- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
 
        channel - Which channel/ensamble to broadcast on
+       dab - Allows the script to know if more commands are needed
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
     if (dab == True):
@@ -55,7 +56,7 @@ def transmit_DAB_1(channel, dab):
 
 def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
     """
-       mp3tofifo- Gets a mp3 file and converts it with passed parameters to a .wav file that is then piped to an output. The tool called toolame which
+       mp3tofifo_DAB_2- Gets a mp3 file and converts it with passed parameters to a .wav file that is then piped to an output. The tool called toolame which
        converts the the given stream into an mp2 format again with passed parameters to allow the signal to be transmitted correctly which is finally
        passed to a given fifo pipe name in this case 'first.fifo' to alow the enxt process to take this steam
 
@@ -73,7 +74,7 @@ def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_2(bit_rate, station_id, label):
     """
-       config- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
+       params_DAB_2- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
        command and is outputed on a specifed fifo pipe.
 
        bit_rate - The bit rate which the frequency is wanted to be transmitted on
@@ -89,7 +90,7 @@ def params_DAB_2(bit_rate, station_id, label):
 
 def transmit_DAB_2(channel):
     """
-       config- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
+       transmit_DAB_2- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
 
        channel - Which channel/ensamble to broadcast on
     """
@@ -103,6 +104,15 @@ def transmit_DAB_2(channel):
 
 
 def transmit_FM_1(frequency, sample_rate, mp3_name, dab):
+    """
+        transmit_FM_1- Transmits the FM signal with the chosen frequency, sample rate and what to play
+
+        frequency- What frequency the fm channel should be on
+        sample_rate- The sample whichthe frequency is wanting to be on
+        mp3_name- The mp3 file that is wanting to be played
+        dab - Allows the script to know if more commands are needed
+    """
+    #Adds & if dab command is also needing to be run
     if (dab == True):
         add='&'
     else:
@@ -114,6 +124,15 @@ def transmit_FM_1(frequency, sample_rate, mp3_name, dab):
 
 
 def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, dab):
+    """
+        transmit_FM_2- Transmits the FM signal twice with the chosen frequency, sample rate and what to play for both broadcasts
+
+        frequency1/2- What frequency the fm channel should be on
+        sample_rate1/2- The sample whichthe frequency is wanting to be on
+        mp3_name1/2- The mp3 file that is wanting to be played
+        dab - Allows the script to know if more commands are needed
+    """
+    #Adds & if dab command is also needing to be run
     if (dab == True):
         add='&'
     else:
@@ -127,15 +146,21 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, dab)
 
 
 def serial(fm, dab):
-    result = os.popen('hackrf_info | grep Serial')
+    """
+        serial- finds the hackrf's serial number and assigns them to either FM or DAB as well as hardcoding these values into the scripts
+
+        fm- The amount of FM stations wanting to be run
+        dab - The amount of DAB stations wanting to be run
+    """
+    result = os.popen('hackrf_info | grep Serial') # Get the serial numbers of te HAckRf plugged in
     result = result.read()
     amount=(result.split('Serial number:'))
-    amount = [y.replace('\n', '') for y in amount]
+    amount = [y.replace('\n', '') for y in amount] # Remove unwated infomation
     amount = [y.replace(' ', '') for y in amount]
     if (fm == 1):
-        fm1 = amount[1]
-        print(fm1)
-        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py')
+        fm1 = amount[1] #Assigns the serial number to the variable
+        print(f'fm1- {fm1}')
+        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py') #creates a new script with the serial hard coded
         with open('src/temp/fmtx1_real.py', 'r') as file :
             filedata = file.read()
         # Replace the target string
@@ -146,10 +171,10 @@ def serial(fm, dab):
         with open('src/temp/fmtx1_real.py', 'w') as file:
             file.write(filedata)
         if (dab >= 1):
-            amount = [y.replace('0000000000000000', '') for y in amount]
+            amount = [y.replace('0000000000000000', '') for y in amount] #changes the serial sytax as ODR-DabMux can't use 0's
             dab1 = amount[2]
-            print(dab1)
-            os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
+            print(f'dab1-{dab1}')
+            os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini') #creates a new script with the serial hard coded
             with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
@@ -160,7 +185,7 @@ def serial(fm, dab):
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[3]
-                print(dab2)
+                print(f'dab2- {dab2}')
                 os.system('sudo cp src/config_blank2.ini src/temp/config_real2.ini')
                 with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
@@ -173,9 +198,9 @@ def serial(fm, dab):
     elif (fm ==2):
         fm1 = amount[1]
         fm2 = amount[2]
-        print(fm1)
-        print(fm2)
-        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx2_real.py')
+        print(f'fm1- {fm1}')
+        print(f'fm2- {fm2}')
+        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx2_real.py') #creates a new script with the serial hard coded
         os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py')
         with open('src/temp/fmtx1_real.py', 'r') as file :
             filedata = file.read()
@@ -195,9 +220,10 @@ def serial(fm, dab):
         with open('src/temp/fmtx2_real.py', 'w') as file:
             file.write(filedata)
         if (dab >= 1):
-            amount = [y.replace('0000000000000000', '') for y in amount]
+            amount = [y.replace('0000000000000000', '') for y in amount]  #changes the serial sytax as ODR-DabMux can't use 0's
             dab1 = amount[3]
             print(dab1)
+            print(f'dab1- {dab1}')
             os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
             with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
@@ -209,7 +235,7 @@ def serial(fm, dab):
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[4]
-                print(dab2)
+                print(f'dab2- {dab2}')
                 os.system('sudo cp config_blank2.ini src/temp/config_real2.ini')
                 with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
@@ -222,10 +248,10 @@ def serial(fm, dab):
                     file.write(filedata)
     else:
         if (dab >= 1):
-            amount = [y.replace('0000000000000000', '') for y in amount]
+            amount = [y.replace('0000000000000000', '') for y in amount] #changes the serial sytax as ODR-DabMux can't use 0's
             dab1 = amount[1]
-            print(dab1)
-            os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
+            print(f'dab1-{dab1}')
+            os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini') #creates a new script with the serial hard coded
             with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
@@ -318,7 +344,7 @@ def main(fm, dab):
             full_settings()
         else:
             print(help)
-    bash_script = open('src/launch.sh','a')
+    bash_script = open('src/launch.sh','a') #makes it into a bash scri[t]
     bash_script.write(f"""#!/bin/sh
 """)
     bash_script.close()
@@ -358,7 +384,7 @@ def main(fm, dab):
         print('Error- Typed more than 2? (Not Capable yet)')
     os.system('cat src/launch.sh')
     os.system('sh src/launch.sh') #Launches the final script
-    result2 = (subprocess.Popen('rm src/launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
+    result2 = (subprocess.Popen('sudo rm src/launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
 
 
 help = '''
@@ -375,7 +401,6 @@ sudo python3 src/main.py -i1 uranium -i2 jungle -s 48000 -b 128 -ch1 11C -id1 1 
 -h                  help menu
 '''
 if __name__=="__main__":
-#    sys.argv=['-ch','11C']
     length=(len(sys.argv))-1
     if (sys.argv[length] == '-h'):
         print(help)

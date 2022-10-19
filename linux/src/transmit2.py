@@ -4,7 +4,8 @@ import time
 
 def transmit_DAB_2(channel):
     """
-       config- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
+       transmit_DAB_2- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
+       
        channel - Which channel/ensamble to broadcast on
     """
     #Pipes in the given fifo stream and chooses which ensamble to broadcast on using the configeration file provided. This is then outputted on an 

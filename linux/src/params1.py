@@ -3,8 +3,9 @@ import sys
 
 def params(bit_rate,station_id,label):
     """
-       config- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
+       params- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
        command and is outputed on a specifed fifo pipe.
+       
        bit_rate - The bit rate which the frequency is wanted to be transmitted on
        station_id - Gives the station ID that is wanting to be used
        label - Gives the label wanting to be used
