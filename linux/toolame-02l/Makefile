@@ -27,7 +27,7 @@ c_sources = \
 OBJ = $(c_sources:.c=.o)
 
 #Uncomment this if you want to do some profiling/debugging
-#PG = -g -pg
+PG = -g -pg
 PG = -fomit-frame-pointer
 
 # Optimize flag. 3 is about as high as you can sanely go with GCC3.2.
@@ -37,7 +37,7 @@ OPTIM = -O3
 REQUIRED = -DNDEBUG -DINLINE=inline
 
 #pick your architecture
-ARCH = -march=pentium
+ARCH = -march=native
 #Possible x86 architectures
 #gcc3.2 => i386, i486, i586, i686, pentium, pentium-mmx
 #          pentiumpro, pentium2, pentium3, pentium4, k6, k6-2, k6-3,
