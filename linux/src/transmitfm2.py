@@ -4,18 +4,18 @@ import time
 
 def transmit_FM_2(frequency2, sample_rate, mp3_name2):
     # Read in the file
-    with open('fmtx2_real.py', 'r') as file :
+    with open('src/temp/fmtx2_real.py', 'r') as file :
         filedata = file.read()
 
     new_frequency = (f'= freq = {frequency2}e6')
     filedata = filedata.replace('= freq =', new_frequency)
 
     # Write the file out again
-    with open('fmtx2_real.py', 'w') as file:
+    with open('src/temp/fmtx2_real.py', 'w') as file:
         file.write(filedata)
-    command2 = (f"xterm -e 'sudo mpg123 -r{sample_rate} -m -s {mp3_name2}.mp3 > stream2.fifo'")
+    command2 = (f"xterm -e 'sudo mpg123 -r{sample_rate} -m -s ../music/{mp3_name2}.mp3 > pipes/stream2.fifo'")
     #os.system(command2)
-    command2 = (f"xterm -hold -e 'sudo /usr/bin/python3 fmtx2_real.py'")
+    command2 = (f"xterm -hold -e 'sudo /usr/bin/python3 src/temp/fmtx2_real.py'")
     os.system(command2)
 if __name__=="__main__":
     """

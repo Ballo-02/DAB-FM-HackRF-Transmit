@@ -11,7 +11,7 @@ def params(bit_rate,station_id,label):
     """
     #Adds onto the piped stream parameters allowing the station to be correctly broadcast amd finally outputting the stream to different pipe. Runs this in 
     #xterm to open another window
-    command=(f"sudo xterm -hold -e 'sudo ./../crc-dabmux/src/CRC-DabMux -A ./f1.fifo -b {bit_rate} -i {station_id} -p 3 -S -L {label} -C -i1 -O fifo://s1.fifo'")
+    command=(f"sudo xterm -hold -e 'sudo ./repos/crc-dabmux/src/CRC-DabMux -A ./pipes/f1.fifo -b {bit_rate} -i {station_id} -p 3 -S -L {label} -C -i1 -O fifo://pipes/s1.fifo'")
     os.system(command)
 
 if __name__=="__main__":
@@ -21,7 +21,7 @@ if __name__=="__main__":
     #Creates default values
     bit_rate = '128'
     station_id = '1'
-    label = 'Skyships1'
+    label = f'Skyships1'
     length=len(sys.argv)
     #If parameters are passed to the script
     for i in range(length):

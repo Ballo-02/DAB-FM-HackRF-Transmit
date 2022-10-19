@@ -10,7 +10,7 @@ def transmit_DAB_1(channel):
     #Pipes in the given fifo stream and chooses which ensamble to broadcast on using the configeration file provided. This is then outputted on an 
     #xterm terminal
     # Read in the file
-    with open('config_real1.ini', 'r') as file :
+    with open('src/temp/config_real1.ini', 'r') as file :
         filedata = file.read()
 
     # Replace the target string
@@ -18,16 +18,14 @@ def transmit_DAB_1(channel):
     filedata = filedata.replace('channel=', new_channel)
 
     # Write the file out again
-    with open('config_real1.ini', 'w') as file:
+    with open('src/temp/config_real1.ini', 'w') as file:
         file.write(filedata)
-    command = (f"xterm -hold -e 'sudo ./../ODR-DabMod/odr-dabmod config_real1.ini'")
-    #time.sleep(15)
+    command = (f"xterm -hold -e 'sudo ./repos/ODR-DabMod/odr-dabmod src/temp/config_real1.ini'")
     os.system(command)
 if __name__=="__main__":
     """
         Take in the paramters and runs config funtion
     """
-    sys.argv=['-ch','11C']
     #Creates the default values
     channel = '12C'
     length=len(sys.argv)

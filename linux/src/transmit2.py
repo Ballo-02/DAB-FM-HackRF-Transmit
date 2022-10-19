@@ -2,7 +2,6 @@ import sys
 import os
 import time
 
-
 def transmit_DAB_2(channel):
     """
        config- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
@@ -10,18 +9,18 @@ def transmit_DAB_2(channel):
     """
     #Pipes in the given fifo stream and chooses which ensamble to broadcast on using the configeration file provided. This is then outputted on an 
     #xterm terminal
-
-    with open('config_real2.ini', 'r') as file :
+    # Read in the file
+    with open('src/temp/config_real2.ini', 'r') as file :
         filedata = file.read()
+
     # Replace the target string
     new_channel = (f'channel={channel}')
     filedata = filedata.replace('channel=', new_channel)
 
     # Write the file out again
-    with open('config_real2.ini', 'w') as file:
+    with open('src/temp/config_real2.ini', 'w') as file:
         file.write(filedata)
-    command = (f"xterm -hold -e 'sudo ./../ODR-DabMod/odr-dabmod config_real2.ini'")
-    #time.sleep(10)
+    command = (f"xterm -hold -e 'sudo ./repos/ODR-DabMod/odr-dabmod src/temp/config_real2.ini'")
     os.system(command)
 if __name__=="__main__":
     """

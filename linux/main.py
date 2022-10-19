@@ -14,11 +14,11 @@ def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    result = (subprocess.Popen('mkfifo ./f1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    result = (subprocess.Popen('mkfifo ./../pipes/f1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     #Writes the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('launch.sh','a')
+    bash_script = open('src/launch.sh','a')
     bash_script.write(f"""
-/usr/bin/python3 convert1.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
+/usr/bin/python3 src/convert1.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
     bash_script.close()
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_1(bit_rate, station_id, label):
@@ -31,10 +31,10 @@ def params_DAB_1(bit_rate, station_id, label):
        label - Gives the label wanting to be used
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
-    result = (subprocess.Popen('mkfifo ./s1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
-    bash_script = open('launch.sh', 'a')
+    result = (subprocess.Popen('mkfifo ./../pipes/s1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 params1.py -b {bit_rate} -id {station_id} -l {label} &""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3  src/params1.py -b {bit_rate} -id {station_id} -l {label} &""") #Create python launch sript inside launch shell script passing desired params
 
 
 def transmit_DAB_1(channel, dab):
@@ -48,9 +48,9 @@ def transmit_DAB_1(channel, dab):
         add='&'
     else:
         add=''
-    bash_script = open('launch.sh', 'a')
+    bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 transmit1.py -ch {channel} {add}""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/transmit1.py -ch {channel} {add}""") #Create python launch sript inside launch shell script passing desired params
     bash_script.close()
 
 def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
@@ -64,11 +64,11 @@ def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    result = (subprocess.Popen('mkfifo ./f2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    result = (subprocess.Popen('mkfifo ./../pipes/f2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     #Writes the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('launch.sh','a')
+    bash_script = open('src/launch.sh','a')
     bash_script.write(f"""
-/usr/bin/python3 convert2.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
+/usr/bin/python3 src/convert2.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
     bash_script.close()
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_2(bit_rate, station_id, label):
@@ -81,10 +81,10 @@ def params_DAB_2(bit_rate, station_id, label):
        label - Gives the label wanting to be used
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
-    result = (subprocess.Popen('mkfifo ./s2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
-    bash_script = open('launch.sh', 'a')
+    result = (subprocess.Popen('mkfifo ./../pipes/s2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
+    bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 params2.py -b {bit_rate} -id {station_id} -l {label} &""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/params2.py -b {bit_rate} -id {station_id} -l {label} &""") #Create python launch sript inside launch shell script passing desired params
 
 
 def transmit_DAB_2(channel):
@@ -94,9 +94,9 @@ def transmit_DAB_2(channel):
        channel - Which channel/ensamble to broadcast on
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('launch.sh', 'a')
+    bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 transmit2.py -ch {channel}""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/transmit2.py -ch {channel}""") #Create python launch sript inside launch shell script passing desired params
     bash_script.close()
 
 
@@ -107,9 +107,9 @@ def transmit_FM_1(frequency, sample_rate, mp3_name, dab):
         add='&'
     else:
         add=''
-    bash_script = open('launch.sh', 'a')
+    bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 transmitfm1.py -f {frequency} -s {sample_rate} -i {mp3_name} {add}""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/transmitfm1.py -f {frequency} -s {sample_rate} -i {mp3_name} {add}""") #Create python launch sript inside launch shell script passing desired params
     bash_script.close()
 
 
@@ -118,11 +118,11 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, dab)
         add='&'
     else:
         add=''
-    bash_script = open('launch.sh', 'a')
+    bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 transmitfm1.py -f {frequency1} -s {sample_rate} -i {mp3_name1} &""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/transmitfm1.py -f {frequency1} -s {sample_rate} -i {mp3_name1} &""") #Create python launch sript inside launch shell script passing desired params
     bash_script.write(f"""
-/usr/bin/python3 transmitfm2.py -f {frequency2} -s {sample_rate} -i {mp3_name2} {add}""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/transmitfm2.py -f {frequency2} -s {sample_rate} -i {mp3_name2} {add}""") #Create python launch sript inside launch shell script passing desired params
     bash_script.close()
 
 
@@ -135,117 +135,117 @@ def serial(fm, dab):
     if (fm == 1):
         fm1 = amount[1]
         print(fm1)
-        os.system('sudo cp fmtx1_blank.py fmtx1_real.py')
-        with open('fmtx1_real.py', 'r') as file :
+        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py')
+        with open('src/temp/fmtx1_real.py', 'r') as file :
             filedata = file.read()
         # Replace the target string
         new_serial = (f'hackrf={fm1}')
         filedata = filedata.replace('hackrf=', new_serial)
 
         # Write the file out again
-        with open('fmtx1_real.py', 'w') as file:
+        with open('src/temp/fmtx1_real.py', 'w') as file:
             file.write(filedata)
         if (dab >= 1):
             amount = [y.replace('0000000000000000', '') for y in amount]
             dab1 = amount[2]
             print(dab1)
-            os.system('sudo cp config_blank1.ini config_real1.ini')
-            with open('config_real1.ini', 'r') as file :
+            os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
+            with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
             new_serial = (f'device=serial={dab1}')
             filedata = filedata.replace('device=serial=', new_serial)
             # Write the file out again
-            with open('config_real1.ini', 'w') as file:
+            with open('src/temp/config_real1.ini', 'w') as file:
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[3]
                 print(dab2)
-                os.system('sudo cp config_blank2.ini config_real2.ini')
-                with open('config_real2.ini', 'r') as file :
+                os.system('sudo cp src/config_blank2.ini src/temp/config_real2.ini')
+                with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
                 # Replace the target string
                 new_serial = (f'device=serial={dab2}')
                 filedata = filedata.replace('device=serial=', new_serial)
                 # Write the file out again
-                with open('config_real2.ini', 'w') as file:
+                with open('src/temp/config_real2.ini', 'w') as file:
                     file.write(filedata)
     elif (fm ==2):
         fm1 = amount[1]
         fm2 = amount[2]
         print(fm1)
         print(fm2)
-        os.system('sudo cp fmtx1_blank.py fmtx2_real.py')
-        os.system('sudo cp fmtx1_blank.py fmtx1_real.py')
-        with open('fmtx1_real.py', 'r') as file :
+        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx2_real.py')
+        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py')
+        with open('src/temp/fmtx1_real.py', 'r') as file :
             filedata = file.read()
         # Replace the target string
         new_serial = (f'hackrf={fm1}')
         filedata = filedata.replace('hackrf=', new_serial)
         # Write the file out again
-        with open('fmtx1_real.py', 'w') as file:
+        with open('src/temp/fmtx1_real.py', 'w') as file:
             file.write(filedata)
 
 
-        with open('fmtx2_real.py', 'r') as file :
+        with open('src/temp/fmtx2_real.py', 'r') as file :
             filedata = file.read()
         new_serial = (f'hackrf={fm2}')
         filedata = filedata.replace('hackrf=', new_serial)
         # Write the file out again
-        with open('fmtx2_real.py', 'w') as file:
+        with open('src/temp/fmtx2_real.py', 'w') as file:
             file.write(filedata)
         if (dab >= 1):
             amount = [y.replace('0000000000000000', '') for y in amount]
             dab1 = amount[3]
             print(dab1)
-            os.system('sudo cp config_blank1.ini config_real1.ini')
-            with open('config_real1.ini', 'r') as file :
+            os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
+            with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
             new_serial = (f'device=serial={dab1}')
             filedata = filedata.replace('device=serial=', new_serial)
             # Write the file out again
-            with open('config_real1.ini', 'w') as file:
+            with open('src/temp/config_real1.ini', 'w') as file:
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[4]
                 print(dab2)
-                os.system('sudo cp config_blank2.ini config_real2.ini')
-                with open('config_real2.ini', 'r') as file :
+                os.system('sudo cp config_blank2.ini src/temp/config_real2.ini')
+                with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
                 # Replace the target string
                 new_serial = (f'device=serial={dab2}')
                 filedata = filedata.replace('device=serial=', new_serial)
 
                 # Write the file out again
-                with open('config_real2.ini', 'w') as file:
+                with open('src/temp/config_real2.ini', 'w') as file:
                     file.write(filedata)
     else:
         if (dab >= 1):
             amount = [y.replace('0000000000000000', '') for y in amount]
             dab1 = amount[1]
             print(dab1)
-            os.system('sudo cp config_blank1.ini config_real1.ini')
-            with open('config_real1.ini', 'r') as file :
+            os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
+            with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
             new_serial = (f'device=serial={dab1}')
             filedata = filedata.replace('device=serial=', new_serial)
             # Write the file out again
-            with open('config_real1.ini', 'w') as file:
+            with open('src/temp/config_real1.ini', 'w') as file:
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[2]
                 print(dab2)
-                os.system('sudo cp config_blank2.ini config_real2.ini')
-                with open('config_real2.ini', 'r') as file :
+                os.system('sudo cp src/config_blank2.ini src/temp/config_real2.ini')
+                with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
                 # Replace the target string
                 new_serial = (f'device=serial={dab2}')
                 filedata = filedata.replace('device=serial=', new_serial)
 
                 # Write the file out again
-                with open('config_real2.ini', 'w') as file:
+                with open('src/temp/config_real2.ini', 'w') as file:
                     file.write(filedata)
             else:
                 print('Error- Typed more than 2? (Not Capable yet)')
@@ -278,10 +278,8 @@ def main(fm, dab):
     channel2 = '13C'
     frequency1 = '93.4'
     frequency2 = '94.4'
-    #label1 = f'Skyships -{channel1}'
-    #label2 = f'Skyships -{channel2}'
-    label1='skyships1'
-    label2='skyships2'
+    label1 = f'Skyships-{channel1}'
+    label2 = f'Skyships-{channel2}'
     length= len(sys.argv)
 
     #If parameters are passed to the script this will take them in and change them values
@@ -320,7 +318,7 @@ def main(fm, dab):
             full_settings()
         else:
             print(help)
-    bash_script = open('launch.sh','a')
+    bash_script = open('src/launch.sh','a')
     bash_script.write(f"""#!/bin/sh
 """)
     bash_script.close()
@@ -358,14 +356,14 @@ def main(fm, dab):
         print("'starting 0 DAB radio's")
     else:
         print('Error- Typed more than 2? (Not Capable yet)')
-    os.system('cat launch.sh')
-    os.system('sh launch.sh') #Launches the final script
-    result2 = (subprocess.Popen('rm launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
+    os.system('cat src/launch.sh')
+    os.system('sh src/launch.sh') #Launches the final script
+    result2 = (subprocess.Popen('rm src/launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
 
 
 help = '''
-Usage: sudo python3 main.py [options]
-sudo python3 main.py -i1 uranium -i2 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
+Usage: sudo python3 src/main.py [options]
+sudo python3 src/main.py -i1 uranium -i2 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
 
 -v                  use the settings in 'values.txt'
 -i 1/2/3/4          mp3 name (without .mp3)

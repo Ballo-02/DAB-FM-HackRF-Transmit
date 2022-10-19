@@ -69,7 +69,7 @@ class fmtx1(gr.top_block):
         self.blocks_short_to_float_0 = blocks.short_to_float(1, 1)
         self.blocks_multiply_const_vxx_2 = blocks.multiply_const_cc(32768)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(0.000030)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_short*1, '/home/anyone/Documents/radio/DAB-FM-HackRF-Transmit/linux/src/stream1.fifo', True, 0, 0)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_short*1, 'pipes/stream1.fifo', True, 0, 0)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.analog_wfm_tx_0 = analog.wfm_tx(
         	audio_rate=samp_rate,

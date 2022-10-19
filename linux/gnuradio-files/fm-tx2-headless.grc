@@ -1,7 +1,6 @@
 options:
   parameters:
     author: ''
-    catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
@@ -33,18 +32,18 @@ options:
     state: enabled
 
 blocks:
-- name: freq_2
+- name: freq
   id: variable
   parameters:
     comment: ''
-    value: 94.4e6
+    value: 93.4e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [784, 372.0]
+    coordinate: [140, 176]
     rotation: 0
-    state: enabled
+    state: true
 - name: if_samp_rate
   id: variable
   parameters:
@@ -54,7 +53,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 24.0]
+    coordinate: [138, 112]
     rotation: 0
     state: true
 - name: quad_rate
@@ -66,7 +65,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [176, 96.0]
+    coordinate: [11, 240]
     rotation: 0
     state: enabled
 - name: rf_samp_rate
@@ -78,7 +77,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 128.0]
+    coordinate: [11, 108]
     rotation: 0
     state: true
 - name: samp_rate
@@ -90,10 +89,22 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 16.0]
+    coordinate: [11, 176]
     rotation: 0
     state: enabled
-- name: analog_wfm_tx_0_0
+- name: variable_0
+  id: variable
+  parameters:
+    comment: ''
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [12, 307]
+    rotation: 0
+    state: true
+- name: analog_wfm_tx_0
   id: analog_wfm_tx
   parameters:
     affinity: ''
@@ -110,17 +121,17 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 620.0]
+    coordinate: [865, 466]
     rotation: 0
-    state: enabled
-- name: blocks_file_source_0_0
+    state: true
+- name: blocks_file_source_0
   id: blocks_file_source
   parameters:
     affinity: ''
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/owen/Documents/radio/DAB-FM-HackRF-Transmit/linux/src/stream2.fifo
+    file: /home/anyone/Documents/radio/DAB-FM-HackRF-Transmit/linux/pipes/stream2.fifo
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -132,10 +143,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 620.0]
+    coordinate: [41, 465]
     rotation: 0
     state: enabled
-- name: blocks_multiply_const_vxx_0_0
+- name: blocks_multiply_const_vxx_0
   id: blocks_multiply_const_vxx
   parameters:
     affinity: ''
@@ -150,10 +161,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 652.0]
+    coordinate: [452, 497]
     rotation: 0
     state: enabled
-- name: blocks_multiply_const_vxx_2_0
+- name: blocks_multiply_const_vxx_2
   id: blocks_multiply_const_vxx
   parameters:
     affinity: ''
@@ -168,10 +179,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1536, 460.0]
+    coordinate: [1023, 685]
     rotation: 0
-    state: enabled
-- name: blocks_short_to_float_0_0
+    state: true
+- name: blocks_short_to_float_0
   id: blocks_short_to_float
   parameters:
     affinity: ''
@@ -185,10 +196,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 652.0]
+    coordinate: [272, 497]
     rotation: 0
     state: enabled
-- name: osmosdr_sink_0_0
+- name: osmosdr_sink_0
   id: osmosdr_sink
   parameters:
     affinity: ''
@@ -331,7 +342,7 @@ blocks:
     corr7: '0'
     corr8: '0'
     corr9: '0'
-    freq0: freq_2
+    freq0: freq
     freq1: 100e6
     freq10: 100e6
     freq11: 100e6
@@ -446,10 +457,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1712, 572.0]
+    coordinate: [1259, 605]
     rotation: 0
     state: enabled
-- name: rational_resampler_xxx_0_0
+- name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
     affinity: ''
@@ -466,10 +477,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1216, 644.0]
+    coordinate: [1145, 474]
     rotation: 0
-    state: enabled
-- name: rational_resampler_xxx_2_0
+    state: true
+- name: rational_resampler_xxx_2
   id: rational_resampler_xxx
   parameters:
     affinity: ''
@@ -486,10 +497,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1360, 484.0]
+    coordinate: [1351, 474]
     rotation: 0
-    state: enabled
-- name: rational_resampler_xxx_3_0
+    state: true
+- name: rational_resampler_xxx_3
   id: rational_resampler_xxx
   parameters:
     affinity: ''
@@ -506,20 +517,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 644.0]
+    coordinate: [645, 473]
     rotation: 0
-    state: enabled
+    state: true
 
 connections:
-- [analog_wfm_tx_0_0, '0', rational_resampler_xxx_0_0, '0']
-- [blocks_file_source_0_0, '0', blocks_short_to_float_0_0, '0']
-- [blocks_multiply_const_vxx_0_0, '0', rational_resampler_xxx_3_0, '0']
-- [blocks_multiply_const_vxx_2_0, '0', osmosdr_sink_0_0, '0']
-- [blocks_short_to_float_0_0, '0', blocks_multiply_const_vxx_0_0, '0']
-- [rational_resampler_xxx_0_0, '0', rational_resampler_xxx_2_0, '0']
-- [rational_resampler_xxx_2_0, '0', blocks_multiply_const_vxx_2_0, '0']
-- [rational_resampler_xxx_3_0, '0', analog_wfm_tx_0_0, '0']
+- [analog_wfm_tx_0, '0', rational_resampler_xxx_0, '0']
+- [blocks_file_source_0, '0', blocks_short_to_float_0, '0']
+- [blocks_multiply_const_vxx_0, '0', rational_resampler_xxx_3, '0']
+- [blocks_multiply_const_vxx_2, '0', osmosdr_sink_0, '0']
+- [blocks_short_to_float_0, '0', blocks_multiply_const_vxx_0, '0']
+- [rational_resampler_xxx_0, '0', rational_resampler_xxx_2, '0']
+- [rational_resampler_xxx_2, '0', blocks_multiply_const_vxx_2, '0']
+- [rational_resampler_xxx_3, '0', analog_wfm_tx_0, '0']
 
 metadata:
   file_format: 1
-  grc_version: 3.10.4.0

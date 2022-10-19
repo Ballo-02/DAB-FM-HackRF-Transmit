@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [576, 92.0]
+    coordinate: [142, 172]
     rotation: 0
     state: true
 - name: if_samp_rate
@@ -53,7 +53,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 24.0]
+    coordinate: [140, 108]
     rotation: 0
     state: true
 - name: quad_rate
@@ -65,7 +65,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [176, 96.0]
+    coordinate: [13, 236]
     rotation: 0
     state: enabled
 - name: rf_samp_rate
@@ -77,7 +77,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 128.0]
+    coordinate: [13, 104]
     rotation: 0
     state: true
 - name: samp_rate
@@ -89,7 +89,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 16.0]
+    coordinate: [13, 172]
     rotation: 0
     state: enabled
 - name: variable_0
@@ -101,7 +101,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 196.0]
+    coordinate: [14, 303]
     rotation: 0
     state: true
 - name: analog_wfm_tx_0
@@ -131,7 +131,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/anyone/Documents/radio/DAB-FM-HackRF-Transmit/linux/src/stream1.fifo
+    file: /home/anyone/Documents/radio/DAB-FM-HackRF-Transmit/linux/pipes/stream1.fifo
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
