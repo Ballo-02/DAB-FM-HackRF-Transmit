@@ -175,7 +175,7 @@ def serial(fm, dab):
         fm2 = amount[2]
         print(fm1)
         print(fm2)
-        os.system('sudo cp fmtx2_blank.py fmtx2_real.py')
+        os.system('sudo cp fmtx1_blank.py fmtx2_real.py')
         os.system('sudo cp fmtx1_blank.py fmtx1_real.py')
         with open('fmtx1_real.py', 'r') as file :
             filedata = file.read()

@@ -1,7 +1,6 @@
 options:
   parameters:
     author: ''
-    catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
@@ -33,7 +32,7 @@ options:
     state: enabled
 
 blocks:
-- name: freq_1
+- name: freq
   id: variable
   parameters:
     comment: ''
@@ -122,7 +121,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 532.0]
+    coordinate: [850, 510]
     rotation: 0
     state: true
 - name: blocks_file_source_0
@@ -132,7 +131,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/owen/Documents/radio/DAB-FM-HackRF-Transmit/linux/src/stream1.fifo
+    file: /home/anyone/Documents/radio/DAB-FM-HackRF-Transmit/linux/src/stream1.fifo
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -144,7 +143,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [128, 876.0]
+    coordinate: [26, 509]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_vxx_0
@@ -162,7 +161,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 564.0]
+    coordinate: [437, 541]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_vxx_2
@@ -180,7 +179,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1528, 368.0]
+    coordinate: [1008, 729]
     rotation: 0
     state: true
 - name: blocks_short_to_float_0
@@ -197,7 +196,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 956.0]
+    coordinate: [257, 541]
     rotation: 0
     state: enabled
 - name: osmosdr_sink_0
@@ -343,7 +342,7 @@ blocks:
     corr7: '0'
     corr8: '0'
     corr9: '0'
-    freq0: freq_1
+    freq0: freq
     freq1: 100e6
     freq10: 100e6
     freq11: 100e6
@@ -458,7 +457,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1704, 480.0]
+    coordinate: [1244, 649]
     rotation: 0
     state: enabled
 - name: rational_resampler_xxx_0
@@ -478,7 +477,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1216, 548.0]
+    coordinate: [1130, 518]
     rotation: 0
     state: true
 - name: rational_resampler_xxx_2
@@ -498,7 +497,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1360, 396.0]
+    coordinate: [1336, 518]
     rotation: 0
     state: true
 - name: rational_resampler_xxx_3
@@ -518,7 +517,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [664, 548.0]
+    coordinate: [630, 517]
     rotation: 0
     state: true
 
@@ -534,4 +533,3 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.4.0

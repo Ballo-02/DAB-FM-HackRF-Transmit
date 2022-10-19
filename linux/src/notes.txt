@@ -1,9 +1,29 @@
 add toolame compile directory
 install apt-get install hackrf
 add hackrf_info for diagnostic
+install apt-get install make, cmake, xterm, gnuradio, gr-osmosdr, ffmpeg
+
+
+
+
+SoapySDR
+sudo apt-get install cmake g++ libpython3-dev python3-numpy swig
+
+
+SoapyHackRF
+sudo add-apt-repository -y ppa:myriadrf/drivers
+sudo apt-get update
+sudo apt-get install hackrf libhackrf-dev
+
+
+
+
+
+ODR-DabMod
+sudo apt-get install autoconf, fftw3-dev, libuhd-dev
 
 when creating crc-adabmux
--edit DabMux.cpp
+-edit src/DabMux.cpp
 add '#include <sys/resource.h>'
 
 sudo apt-get install libfec-dev
@@ -16,3 +36,4 @@ before make of soapyhackrf
 toolame 
 INLINE void putbits --> void putbits in bistream.c
 extern INLINE void putbits (Bit_stream_struc *, unsigned int, int);  --> void putbits (Bit_stream_struc *, unsigned int, int); in bitsream.h
+change march to =march=native
