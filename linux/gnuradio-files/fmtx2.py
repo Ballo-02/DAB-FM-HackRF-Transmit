@@ -26,7 +26,7 @@ import time
 
 
 
-class fmtx1(gr.top_block):
+class fmtx2(gr.top_block):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -34,48 +34,47 @@ class fmtx1(gr.top_block):
         ##################################################
         # Variables
         ##################################################
-        self.variable_0 = variable_0 = 0
         self.samp_rate = samp_rate = 256000
         self.rf_samp_rate = rf_samp_rate = 10240000
         self.quad_rate = quad_rate = 256000
         self.if_samp_rate = if_samp_rate = 1024000
-        self.freq_1 = freq_1 = 93.4e6
+        self.freq_2 = freq_2 = 94.4e6
 
         ##################################################
         # Blocks
         ##################################################
-        self.rational_resampler_xxx_3 = filter.rational_resampler_fff(
+        self.rational_resampler_xxx_3_0 = filter.rational_resampler_fff(
                 interpolation=8,
                 decimation=1,
                 taps=[],
                 fractional_bw=0)
-        self.rational_resampler_xxx_2 = filter.rational_resampler_ccc(
+        self.rational_resampler_xxx_2_0 = filter.rational_resampler_ccc(
                 interpolation=10,
                 decimation=1,
                 taps=[],
                 fractional_bw=0)
-        self.rational_resampler_xxx_0 = filter.rational_resampler_ccc(
+        self.rational_resampler_xxx_0_0 = filter.rational_resampler_ccc(
                 interpolation=4,
                 decimation=1,
                 taps=[],
                 fractional_bw=0)
-        self.osmosdr_sink_0 = osmosdr.sink(
-            args="numchan=" + str(1) + " " + 'hackrf=0000000000000000874461dc25a38957'
+        self.osmosdr_sink_0_0 = osmosdr.sink(
+            args="numchan=" + str(1) + " " + 'hackrf=0000000000000000874461dc2c53b057'
         )
-        self.osmosdr_sink_0.set_sample_rate(rf_samp_rate)
-        self.osmosdr_sink_0.set_center_freq(freq_1, 0)
-        self.osmosdr_sink_0.set_freq_corr(0, 0)
-        self.osmosdr_sink_0.set_gain(50, 0)
-        self.osmosdr_sink_0.set_if_gain(0, 0)
-        self.osmosdr_sink_0.set_bb_gain(20, 0)
-        self.osmosdr_sink_0.set_antenna('', 0)
-        self.osmosdr_sink_0.set_bandwidth(0, 0)
-        self.blocks_short_to_float_0 = blocks.short_to_float(1, 1)
-        self.blocks_multiply_const_vxx_2 = blocks.multiply_const_cc(32768)
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(0.000030)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_short*1, '/home/owen/Documents/fm/stream1.fifo', True, 0, 0)
-        self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
-        self.analog_wfm_tx_0 = analog.wfm_tx(
+        self.osmosdr_sink_0_0.set_sample_rate(rf_samp_rate)
+        self.osmosdr_sink_0_0.set_center_freq(freq_2, 0)
+        self.osmosdr_sink_0_0.set_freq_corr(0, 0)
+        self.osmosdr_sink_0_0.set_gain(50, 0)
+        self.osmosdr_sink_0_0.set_if_gain(0, 0)
+        self.osmosdr_sink_0_0.set_bb_gain(20, 0)
+        self.osmosdr_sink_0_0.set_antenna('', 0)
+        self.osmosdr_sink_0_0.set_bandwidth(0, 0)
+        self.blocks_short_to_float_0_0 = blocks.short_to_float(1, 1)
+        self.blocks_multiply_const_vxx_2_0 = blocks.multiply_const_cc(32768)
+        self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_ff(0.000030)
+        self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_short*1, '/home/owen/Documents/radio/DAB-FM-HackRF-Transmit/linux/src/stream2.fifo', True, 0, 0)
+        self.blocks_file_source_0_0.set_begin_tag(pmt.PMT_NIL)
+        self.analog_wfm_tx_0_0 = analog.wfm_tx(
         	audio_rate=samp_rate,
         	quad_rate=quad_rate,
         	tau=(75e-6),
@@ -87,21 +86,15 @@ class fmtx1(gr.top_block):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_wfm_tx_0, 0), (self.rational_resampler_xxx_0, 0))
-        self.connect((self.blocks_file_source_0, 0), (self.blocks_short_to_float_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.rational_resampler_xxx_3, 0))
-        self.connect((self.blocks_multiply_const_vxx_2, 0), (self.osmosdr_sink_0, 0))
-        self.connect((self.blocks_short_to_float_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.rational_resampler_xxx_0, 0), (self.rational_resampler_xxx_2, 0))
-        self.connect((self.rational_resampler_xxx_2, 0), (self.blocks_multiply_const_vxx_2, 0))
-        self.connect((self.rational_resampler_xxx_3, 0), (self.analog_wfm_tx_0, 0))
+        self.connect((self.analog_wfm_tx_0_0, 0), (self.rational_resampler_xxx_0_0, 0))
+        self.connect((self.blocks_file_source_0_0, 0), (self.blocks_short_to_float_0_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.rational_resampler_xxx_3_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_2_0, 0), (self.osmosdr_sink_0_0, 0))
+        self.connect((self.blocks_short_to_float_0_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0, 0), (self.rational_resampler_xxx_2_0, 0))
+        self.connect((self.rational_resampler_xxx_2_0, 0), (self.blocks_multiply_const_vxx_2_0, 0))
+        self.connect((self.rational_resampler_xxx_3_0, 0), (self.analog_wfm_tx_0_0, 0))
 
-
-    def get_variable_0(self):
-        return self.variable_0
-
-    def set_variable_0(self, variable_0):
-        self.variable_0 = variable_0
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -114,7 +107,7 @@ class fmtx1(gr.top_block):
 
     def set_rf_samp_rate(self, rf_samp_rate):
         self.rf_samp_rate = rf_samp_rate
-        self.osmosdr_sink_0.set_sample_rate(self.rf_samp_rate)
+        self.osmosdr_sink_0_0.set_sample_rate(self.rf_samp_rate)
 
     def get_quad_rate(self):
         return self.quad_rate
@@ -128,17 +121,17 @@ class fmtx1(gr.top_block):
     def set_if_samp_rate(self, if_samp_rate):
         self.if_samp_rate = if_samp_rate
 
-    def get_freq_1(self):
-        return self.freq_1
+    def get_freq_2(self):
+        return self.freq_2
 
-    def set_freq_1(self, freq_1):
-        self.freq_1 = freq_1
-        self.osmosdr_sink_0.set_center_freq(self.freq_1, 0)
-
-
+    def set_freq_2(self, freq_2):
+        self.freq_2 = freq_2
+        self.osmosdr_sink_0_0.set_center_freq(self.freq_2, 0)
 
 
-def main(top_block_cls=fmtx1, options=None):
+
+
+def main(top_block_cls=fmtx2, options=None):
     tb = top_block_cls()
 
     def sig_handler(sig=None, frame=None):

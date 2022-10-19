@@ -38,7 +38,7 @@ class fmtx2(gr.top_block):
         self.rf_samp_rate = rf_samp_rate = 10240000
         self.quad_rate = quad_rate = 256000
         self.if_samp_rate = if_samp_rate = 1024000
-        self.freq = freq = 94.4e6 
+        self.freq_2 = freq_2 = 94.4e6
 
         ##################################################
         # Blocks
@@ -59,10 +59,10 @@ class fmtx2(gr.top_block):
                 taps=[],
                 fractional_bw=0)
         self.osmosdr_sink_0_0 = osmosdr.sink(
-            args="numchan=" + str(1) + " " + 'hackrf=0000000000000000a06063c825744b5f0000000000000000874461dc2c53b057'
+            args="numchan=" + str(1) + " " + 'hackrf=0000000000000000874461dc213e1757'
         )
         self.osmosdr_sink_0_0.set_sample_rate(rf_samp_rate)
-        self.osmosdr_sink_0_0.set_center_freq(freq, 0)
+        self.osmosdr_sink_0_0.set_center_freq(freq_2, 0)
         self.osmosdr_sink_0_0.set_freq_corr(0, 0)
         self.osmosdr_sink_0_0.set_gain(50, 0)
         self.osmosdr_sink_0_0.set_if_gain(0, 0)
@@ -121,12 +121,12 @@ class fmtx2(gr.top_block):
     def set_if_samp_rate(self, if_samp_rate):
         self.if_samp_rate = if_samp_rate
 
-    def get_freq(self):
-        return self.freq
+    def get_freq_2(self):
+        return self.freq_2
 
-    def set_freq(self, freq):
-        self.freq = freq
-        self.osmosdr_sink_0_0.set_center_freq(self.freq, 0)
+    def set_freq_2(self, freq_2):
+        self.freq_2 = freq_2
+        self.osmosdr_sink_0_0.set_center_freq(self.freq_2, 0)
 
 
 

@@ -120,7 +120,9 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, dab)
         add=''
     bash_script = open('launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3 transmitfm2.py -f1 {frequency1} -f2 {frequency2} -s {sample_rate} -i1 {mp3_name1} -i2 {mp3_name2} {add}""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 transmitfm1.py -f {frequency1} -s {sample_rate} -i {mp3_name1} &""") #Create python launch sript inside launch shell script passing desired params
+    bash_script.write(f"""
+/usr/bin/python3 transmitfm2.py -f {frequency2} -s {sample_rate} -i {mp3_name2} {add}""") #Create python launch sript inside launch shell script passing desired params
     bash_script.close()
 
 
@@ -174,14 +176,21 @@ def serial(fm, dab):
         print(fm1)
         print(fm2)
         os.system('sudo cp fmtx2_blank.py fmtx2_real.py')
-        with open('fmtx2_real.py', 'r') as file :
+        os.system('sudo cp fmtx1_blank.py fmtx1_real.py')
+        with open('fmtx1_real.py', 'r') as file :
             filedata = file.read()
         # Replace the target string
         new_serial = (f'hackrf={fm1}')
-        filedata = filedata.replace('hackrf1=', new_serial)
+        filedata = filedata.replace('hackrf=', new_serial)
         # Write the file out again
+        with open('fmtx1_real.py', 'w') as file:
+            file.write(filedata)
+
+
+        with open('fmtx2_real.py', 'r') as file :
+            filedata = file.read()
         new_serial = (f'hackrf={fm2}')
-        filedata = filedata.replace('hackrf2=', new_serial)
+        filedata = filedata.replace('hackrf=', new_serial)
         # Write the file out again
         with open('fmtx2_real.py', 'w') as file:
             file.write(filedata)
@@ -243,15 +252,24 @@ def serial(fm, dab):
         else:
             print('Error- Typed more than 2? (Not Capable yet)')
 
+
+def full_settings():
+    new_channel = (f'channel={channel}')
+    filedata = filedata.replace('channel=', new_channel)
+    result = os.popen('cat values.txt')
+    result = result.read()
+    result = result.split(',')
+    print(result)
+
 def main(fm, dab):
     """
         main- Take in the paramters and displays help script if needed
     """
     #Create the default values
-    mp3_name1 = 'uranium'
-    mp3_name2 = 'jungle'
-    mp3_name3 = 'ernie'
-    mp3_name4 = 'cold'
+    mp3_name1 = '1k'
+    mp3_name2 = '2k'
+    mp3_name3 = 'cold'
+    mp3_name4 = 'uranium'
     sample_rate = 48000
     bit_rate = 128
     station_id1 = 1
@@ -298,6 +316,8 @@ def main(fm, dab):
             frequency1 = sys.argv[i+1]
         elif (sys.argv[i] == '-f2'):
             frequency2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-v'):
+            full_settings()
         else:
             print(help)
     bash_script = open('launch.sh','a')
@@ -313,9 +333,9 @@ def main(fm, dab):
             transmit_FM_1(frequency1, sample_rate, mp3_name1, False)
     elif (fm == '2'):
         if (int(dab) > 0):
-            transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, True)
+            transmit_FM_2(frequency1, frequency2,32000, mp3_name1, mp3_name2, True)
         else:
-            transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, False)
+            transmit_FM_2(frequency1, frequency2,32000, mp3_name1, mp3_name2, False)
         print("starting 2 FM radio's")
     elif (fm == '0'):
         print("'starting 0 FM radio's")
@@ -347,6 +367,7 @@ help = '''
 Usage: sudo python3 main.py [options]
 sudo python3 main.py -i1 uranium -i2 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
 
+-v                  use the settings in 'values.txt'
 -i 1/2/3/4          mp3 name (without .mp3)
 -s                  sample rate
 -b                  bitrate

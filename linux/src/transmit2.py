@@ -34,4 +34,5 @@ if __name__=="__main__":
     for i in range(length):
         if (sys.argv[i] == '-ch'):
             channel2 = sys.argv[i+1]
+    time.sleep(15)
     transmit_DAB_2(channel2)
