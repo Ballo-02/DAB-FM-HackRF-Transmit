@@ -3,61 +3,61 @@
 #----------------------------------MP3 Names----------------------------------
 # FM Broadcast 1
 ,
-i1=uranium
+uranium
 ,
 # FM Broadcast 2
 ,
-i2=jungle
+jungle
 ,
 # DAB Broadcast 1  
 ,
-i3=ernie
+ernie
 ,
 # DAB Broadcast 1  
 ,
-i4=cold
+cold
 ,
 #------------------------------------Rates------------------------------------  
 # Sample Rate
 ,
--s=480000
+48000
 ,
 #Bit Rate
 ,
--b=128
+128
 ,
 
 ##--------------------------------DAB Settings--------------------------------  
 # Station ID 1
 ,
--id1=1
+1
 ,
 # Station ID 2
 ,
--id2=2
+2
 ,
 # Label Name 1
 ,
--l1=Test1
+Test1
 ,
 # Label Name 2
 ,
--l2=Test2
+Test2
 ,
 # Ensamble ID 1
 ,
--ch1=12C
+12C
 ,
 # Ensamble ID 2
 ,
--ch2=13C
+13C
 ,
 ##--------------------------------FM Settings--------------------------------
 # Frequency 1
 ,
--f1=63.4
+61.4
 ,
 # Frequency 2
 ,
--f2=64.4
+64.4
 ,

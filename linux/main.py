@@ -278,77 +278,25 @@ def serial(fm, dab):
         else:
             print('Error- Typed more than 2? (Not Capable yet)')
 
-
-def full_settings():
-    new_channel = (f'channel={channel}')
-    filedata = filedata.replace('channel=', new_channel)
-    result = os.popen('cat values.txt')
-    result = result.read()
-    result = result.split(',')
-    print(result)
-
-def main(fm, dab):
+def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2):
     """
-        main- Take in the paramters and displays help script if needed
-    """
-    #Create the default values
-    mp3_name1 = '1k'
-    mp3_name2 = '2k'
-    mp3_name3 = 'cold'
-    mp3_name4 = 'uranium'
-    sample_rate = 48000
-    bit_rate = 128
-    station_id1 = 1
-    station_id2 = 1
-    channel1 = '12C'
-    channel2 = '13C'
-    frequency1 = '93.4'
-    frequency2 = '94.4'
-    label1 = f'Skyships-{channel1}'
-    label2 = f'Skyships-{channel2}'
-    length= len(sys.argv)
+        execute- Executes the specified function for FM and DAB
 
-    #If parameters are passed to the script this will take them in and change them values
-    for i in range(length):
-        if (sys.argv[i] == '-i' or sys.argv[i] == '-i1'):
-            mp3_name1 = sys.argv[i+1]
-        elif (sys.argv[i] == '-i2'):
-            mp3_name2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-i3'):
-            mp3_name2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-i4'):
-            mp3_name2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-s'):
-            sample_rate = sys.argv[i+1]
-        elif (sys.argv[i] == '-b'):
-            bit_rate = sys.argv[i+1]
-        elif (sys.argv[i] == '-h'):
-            print(help)
-        elif (sys.argv[i] == '-id' or sys.argv[i] == '-id1'):
-            station_id1 = sys.argv[i+1]
-        elif (sys.argv[i] == '-id2'):
-            station_id2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-l' or sys.argv[i] == '-l1'):
-            label1 = sys.argv[i+1]
-        elif (sys.argv[i] == '-l2'):
-            label2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-ch' or sys.argv[i] == '-ch2'):
-            channel1 = sys.argv[i+1]
-        elif (sys.argv[i] == '-ch2'):
-            channel2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-f' or sys.argv[i] == '-f1'):
-            frequency1 = sys.argv[i+1]
-        elif (sys.argv[i] == '-f2'):
-            frequency2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-v'):
-            full_settings()
-        else:
-            print(help)
-    bash_script = open('src/launch.sh','a') #makes it into a bash scri[t]
-    bash_script.write(f"""#!/bin/sh
-""")
-    bash_script.close()
-    serial(int(fm), int(dab))
+        mp3_name1 = MP3 file name of FM 1 station
+        mp3_name2 = MP3 file name of FM 2 station
+        mp3_name3 = MP3 file name of DAB 1 station
+        mp3_name4 = MP3 file name of DAB 2 station
+        sample_rate = Sample rate of audio stream 
+        bit_rate = Bit rate of audio stream
+        station_id1 = Station ID of DAB station 1
+        station_id2 = Station ID of DAB station 2
+        label1 = Label of DAB station 1
+        label2 = Label of DAB station 2
+        channel1 = Channel ensamble used for DAB station 1
+        channel2 = Channel ensamble used for DAB station 2
+        frequency1 = Frequency of FM station 1 
+        frequency2 = Frequency of FM station 1
+    """
     if (fm == '1'):
         print('starting 1 FM radio')
         if (int(dab) > 0):
@@ -385,6 +333,111 @@ def main(fm, dab):
     os.system('cat src/launch.sh')
     os.system('sh src/launch.sh') #Launches the final script
     result2 = (subprocess.Popen('sudo rm src/launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
+
+
+def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2):
+    """
+        full_settings- Takes in the values from 'values.txt'for effiency when -v is passed
+
+        mp3_name1 = MP3 file name of FM 1 station
+        mp3_name2 = MP3 file name of FM 2 station
+        mp3_name3 = MP3 file name of DAB 1 station
+        mp3_name4 = MP3 file name of DAB 2 station
+        sample_rate = Sample rate of audio stream 
+        bit_rate = Bit rate of audio stream
+        station_id1 = Station ID of DAB station 1
+        station_id2 = Station ID of DAB station 2
+        label1 = Label of DAB station 1
+        label2 = Label of DAB station 2
+        channel1 = Channel ensamble used for DAB station 1
+        channel2 = Channel ensamble used for DAB station 2
+        frequency1 = Frequency of FM station 1 
+        frequency2 = Frequency of FM station 1
+    """
+    result = os.popen('cat src/values.txt') # Get values
+    result = result.read()
+    result = result.split(',') # Create the list to hold the values
+    result = [y.replace('\n', '') for y in result]
+    # Assign the variable with the correct values 
+    mp3_name1 = result[1]
+    mp3_name2 = result[3]
+    mp3_name3 = result[5]
+    mp3_name4 = result[7]
+    sample_rate = result[9]
+    bit_rate = result[11]
+    station_id1 = result[13]
+    station_id2 = result[15]
+    label1 = result[17]
+    label2 = result[19]
+    channel1 = result[21]
+    channel2 = result[23]
+    frequency1 = result[25]
+    frequency2 = result[27]
+    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2)
+
+
+def main(fm, dab):
+    """
+        main- Take in the paramters and displays help script if needed
+    """
+    #Create the default values
+    mp3_name1 = '1k'
+    mp3_name2 = '2k'
+    mp3_name3 = 'cold'
+    mp3_name4 = 'uranium'
+    sample_rate = 48000
+    bit_rate = 128
+    station_id1 = 1
+    station_id2 = 1
+    channel1 = '12C'
+    channel2 = '13C'
+    frequency1 = '93.4'
+    frequency2 = '94.4'
+    label1 = f'Skyships-{channel1}'
+    label2 = f'Skyships-{channel2}'
+    length= len(sys.argv)
+
+    bash_script = open('src/launch.sh','a') #makes it into a bash scri[t]
+    bash_script.write(f"""#!/bin/sh""")
+    bash_script.close()
+    serial(int(fm), int(dab))
+    #If parameters are passed to the script this will take them in and change them values
+    for i in range(length):
+        if (sys.argv[i] == '-i' or sys.argv[i] == '-i1'):
+            mp3_name1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-i2'):
+            mp3_name2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-i3'):
+            mp3_name2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-i4'):
+            mp3_name2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-s'):
+            sample_rate = sys.argv[i+1]
+        elif (sys.argv[i] == '-b'):
+            bit_rate = sys.argv[i+1]
+        elif (sys.argv[i] == '-h'):
+            print(help)
+        elif (sys.argv[i] == '-id' or sys.argv[i] == '-id1'):
+            station_id1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-id2'):
+            station_id2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-l' or sys.argv[i] == '-l1'):
+            label1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-l2'):
+            label2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-ch' or sys.argv[i] == '-ch2'):
+            channel1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-ch2'):
+            channel2 = sys.argv[i+1]
+        elif (sys.argv[i] == '-f' or sys.argv[i] == '-f1'):
+            frequency1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-f2'):
+            frequency2 = sys.argv[i+1]
+    if (sys.argv[i] == '-v'): #use values.txt
+        full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2)
+    else:
+        execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2)
+
 
 
 help = '''
