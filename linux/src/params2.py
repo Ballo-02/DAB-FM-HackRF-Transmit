@@ -27,6 +27,9 @@ if __name__=="__main__":
     bit_rate = '128'
     station_id = '1'
     label = 'Skyships2'
+    ensID = '0xc001'
+    ensLabel = 'Skyships2'
+    service = '11'
     length=len(sys.argv)
     #If parameters are passed to the script
     for i in range(length):
@@ -42,4 +45,4 @@ if __name__=="__main__":
             ensLabel = sys.argv[i+1]
         elif (sys.argv[i] == '-s'):
             service = sys.argv[i+1]
-    params(bit_rate,station_id,label, ensID, ensLabel, service)
+    params(bit_rate, station_id, label, ensID, ensLabel, service)

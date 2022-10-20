@@ -26,7 +26,10 @@ if __name__=="__main__":
     #Creates default values
     bit_rate = '128'
     station_id = '1'
-    label = 'Skyships2'
+    label = 'Skyships1'
+    ensID = '0xc000'
+    ensLabel = 'Skyships1'
+    service = '10'
     length=len(sys.argv)
     #If parameters are passed to the script
     for i in range(length):

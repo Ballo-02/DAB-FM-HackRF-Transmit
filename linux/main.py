@@ -1,8 +1,9 @@
 import sys
 import subprocess
 import os
-import time
-
+'''
+    Author: Ballo-02
+'''
 def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
     """
        mp3tofifo_DAB_1- Gets a mp3 file and converts it with passed parameters to a .wav file that is then piped to an output. The tool called toolame which
@@ -37,7 +38,7 @@ def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
     result = (subprocess.Popen('mkfifo ./pipes/s1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
-/usr/bin/python3  src/params1.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""") #Create python launch sript inside launch shell script passing desired params
+/usr/bin/python3 src/params1.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""") #Create python launch sript inside launch shell script passing desired params
 
 
 def transmit_DAB_1(channel, dab):
@@ -241,7 +242,7 @@ def serial(fm, dab):
             if (dab == 2):
                 dab2 = amount[4]
                 print(f'dab2- {dab2}')
-                os.system('sudo cp config_blank2.ini src/temp/config_real2.ini')
+                os.system('sudo cp src/config_blank2.ini src/temp/config_real2.ini')
                 with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
                 # Replace the target string
@@ -283,7 +284,7 @@ def serial(fm, dab):
         else:
             print('Error- Typed more than 2? (Not Capable yet)')
 
-def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
+def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
     """
         execute- Executes the specified function for FM and DAB
 
@@ -291,7 +292,8 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, s
         mp3_name2 = MP3 file name of FM 2 station
         mp3_name3 = MP3 file name of DAB 1 station
         mp3_name4 = MP3 file name of DAB 2 station
-        sample_rate = Sample rate of audio stream 
+        sample_rate1 = Sample rate of FM audio stream 
+        sample_rate2 = Sample rate of DAB audio stream
         bit_rate = Bit rate of audio stream
         station_id1 = Station ID of DAB station 1
         station_id2 = Station ID of DAB station 2
@@ -305,14 +307,14 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, s
     if (fm == '1'):
         print('starting 1 FM radio')
         if (int(dab) > 0):
-            transmit_FM_1(frequency1, sample_rate, mp3_name1, True)
+            transmit_FM_1(frequency1, sample_rate1, mp3_name1, True)
         else:
-            transmit_FM_1(frequency1, sample_rate, mp3_name1, False)
+            transmit_FM_1(frequency1, sample_rate1, mp3_name1, False)
     elif (fm == '2'):
         if (int(dab) > 0):
-            transmit_FM_2(frequency1, frequency2,32000, mp3_name1, mp3_name2, True)
+            transmit_FM_2(frequency1, frequency2,sample_rate1, mp3_name1, mp3_name2, True)
         else:
-            transmit_FM_2(frequency1, frequency2,32000, mp3_name1, mp3_name2, False)
+            transmit_FM_2(frequency1, frequency2,sample_rate1, mp3_name1, mp3_name2, False)
         print("starting 2 FM radio's")
     elif (fm == '0'):
         print("'starting 0 FM radio's")
@@ -320,14 +322,14 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, s
         print('Error- Typed more than 2? (Not Capable yet)')
     if (dab == '1'):
         print('starting 1 DAB radio')
-        mp3tofifo_DAB_1(mp3_name3, sample_rate, bit_rate)
+        mp3tofifo_DAB_1(mp3_name3, sample_rate2, bit_rate)
         params_DAB_1(bit_rate,station_id1,label1, ensID1, ensLabel1, service1)
         transmit_DAB_1(channel1, False)
     elif (dab == '2'):
-        mp3tofifo_DAB_1(mp3_name3, sample_rate, bit_rate)
+        mp3tofifo_DAB_1(mp3_name3, sample_rate2, bit_rate)
         params_DAB_1(bit_rate,station_id1,label1, ensID1, ensLabel1, service1)
         transmit_DAB_1(channel1, True)
-        mp3tofifo_DAB_2(mp3_name4, sample_rate, bit_rate)
+        mp3tofifo_DAB_2(mp3_name4, sample_rate2, bit_rate)
         params_DAB_2(bit_rate, station_id2,label2, ensID2, ensLabel2, service2)
         transmit_DAB_2(channel2)
         print("'starting 2 DAB radio's")
@@ -340,7 +342,7 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, s
     result2 = (subprocess.Popen('sudo rm src/launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
 
 
-def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
+def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
     """
         full_settings- Takes in the values from 'values.txt'for effiency when -v is passed
 
@@ -348,7 +350,8 @@ def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_r
         mp3_name2 = MP3 file name of FM 2 station
         mp3_name3 = MP3 file name of DAB 1 station
         mp3_name4 = MP3 file name of DAB 2 station
-        sample_rate = Sample rate of audio stream 
+        sample_rate1 = Sample rate of FM audio stream 
+        sample_rate2 = Sample rate of DAB audio stream
         bit_rate = Bit rate of audio stream
         station_id1 = Station ID of DAB station 1
         station_id2 = Station ID of DAB station 2
@@ -368,23 +371,24 @@ def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_r
     mp3_name2 = result[3]
     mp3_name3 = result[5]
     mp3_name4 = result[7]
-    sample_rate = result[9]
-    bit_rate = result[11]
-    station_id1 = result[13]
-    station_id2 = result[15]
-    label1 = result[17]
-    label2 = result[19]
-    channel1 = result[21]
-    channel2 = result[23]
-    ensID1 = result[25]
-    ensID2 = result[27]
-    ensLabel1 = result[29]
-    ensLabel2 = result[31]
-    service1 = result[33]
-    service2 = result[35]
-    frequency1 = result[37]
-    frequency2 = result[39]
-    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
+    sample_rate1 = result[9]
+    sample_rate2 = result[11]
+    bit_rate = result[13]
+    station_id1 = result[15]
+    station_id2 = result[17]
+    label1 = result[19]
+    label2 = result[21]
+    channel1 = result[23]
+    channel2 = result[25]
+    ensID1 = result[27]
+    ensID2 = result[29]
+    ensLabel1 = result[31]
+    ensLabel2 = result[33]
+    service1 = result[35]
+    service2 = result[37]
+    frequency1 = result[39]
+    frequency2 = result[41]
+    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 
 def main(fm, dab):
@@ -392,11 +396,12 @@ def main(fm, dab):
         main- Take in the paramters and displays help script if needed
     """
     #Create the default values
-    mp3_name1 = '1k'
-    mp3_name2 = '2k'
-    mp3_name3 = 'cold'
-    mp3_name4 = 'uranium'
-    sample_rate = 48000
+    mp3_name1 = '400'
+    mp3_name2 = '600'
+    mp3_name3 = '800'
+    mp3_name4 = '1k'
+    sample_rate1 = 32000
+    sample_rate2 = 48000
     bit_rate = 128
     station_id1 = 1
     station_id2 = 1
@@ -409,7 +414,7 @@ def main(fm, dab):
     ensID1 = '0xc000'
     ensLabel1 = 'Skyships1'
     service1 = '10'
-    ensID2 = '0xc000'
+    ensID2 = '0xc001'
     ensLabel2 = 'Skyships2'
     service2 = '11'
     length= len(sys.argv)
@@ -425,11 +430,13 @@ def main(fm, dab):
         elif (sys.argv[i] == '-i2'):
             mp3_name2 = sys.argv[i+1]
         elif (sys.argv[i] == '-i3'):
-            mp3_name2 = sys.argv[i+1]
+            mp3_name3 = sys.argv[i+1]
         elif (sys.argv[i] == '-i4'):
-            mp3_name2 = sys.argv[i+1]
-        elif (sys.argv[i] == '-s'):
-            sample_rate = sys.argv[i+1]
+            mp3_name4 = sys.argv[i+1]
+        elif (sys.argv[i] == '-s' or sys.argv[i] == '-s1'):
+            sample_rate1 = sys.argv[i+1]
+        elif (sys.argv[i] == '-s2' ):
+            sample_rate2 = sys.argv[i+1]
         elif (sys.argv[i] == '-b'):
             bit_rate = sys.argv[i+1]
         elif (sys.argv[i] == '-h'):
@@ -463,23 +470,27 @@ def main(fm, dab):
         elif (sys.argv[i] == '-sl2'):
             service2 = sys.argv[i+1]
     if (sys.argv[i] == '-v'): #use values.txt
-        full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
+        full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
     else:
-        execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
+        execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 
 
 help = '''
 Usage: sudo python3 src/main.py [options]
-sudo python3 src/main.py -i1 uranium -i2 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
+sudo python3 src/main.py -i1 uranium -i3 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
 
 -v                  use the settings in 'values.txt'
--i 1/2/3/4          mp3 name (without .mp3)
--s                  sample rate
+-i 1/2              mp3 name for FM (without .mp3)
+-i 3/4              mp3 name for DAB (without .mp3)
+-s 1/2              sample rate (FM/DAB)
 -b                  bitrate
 -ch 1/2             channel 
--id 1/2             channel id
+-id 1/2             channel ID
 -l 1/2              label
+-eid 1/2            ensemble ID
+-el 1/2             ensemble Label
+-sl 1/2             service
 -h                  help menu
 '''
 if __name__=="__main__":

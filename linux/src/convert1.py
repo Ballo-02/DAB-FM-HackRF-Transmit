@@ -14,14 +14,14 @@ def mp3tofifo(mp3_name, sample_rate, bit_rate):
     """
     sample_rate_short = str(int(sample_rate)/1000) #Converts the file into KHz output
     #Creates the stream that converts the mp3 to wav piped into toolame tool to make it into a mp2 stream and output the command to xterm window
-    command = (f"xterm -hold -e 'sudo ffmpeg -stream_loop -1 -re -i music/{mp3_name}.mp3 -ar {sample_rate} -f wav - |./repos/toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./pipes/f1.fifo'")
+    command = (f"xterm -hold -e 'sudo ffmpeg -stream_loop -1 -re -i music/{mp3_name}.mp3 -ar {sample_rate} -f wav - |sudo ./repos/toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./pipes/f1.fifo'")
     os.system(command)
 if __name__=="__main__":
     """
         Take in the paramters and runs mp3tofifo funtion
     """
     #Creates default values
-    mp3_name = 'uranium'
+    mp3_name = '1k'
     sample_rate = 48000
     bit_rate = 128
     length=len(sys.argv)

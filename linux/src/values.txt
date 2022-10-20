@@ -3,22 +3,26 @@
 #----------------------------------MP3 Names----------------------------------
 # FM Broadcast 1
 ,
-uranium
+400
 ,
 # FM Broadcast 2
 ,
-jungle
+600
 ,
 # DAB Broadcast 1  
 ,
-ernie
+800
 ,
 # DAB Broadcast 1  
 ,
-cold
+1k
 ,
 #------------------------------------Rates------------------------------------  
-# Sample Rate
+# Sample Rate FM
+,
+32000
+,
+# Sample Rate DAB
 ,
 48000
 ,
