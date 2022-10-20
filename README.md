@@ -106,7 +106,7 @@ Contains the configeration for transmitting the DAB station which can be edited 
 ### `music/uranium.mp3`
 A mp3 file containing the song 'Uranium Fever' as a default test sound 
 
-### `gnuradio/fmtx1/2.py`
+### `gnuradio/fmtx1.py`
 Python3 script that runs GNURadio libaries to transmit FM 
 
 ## Documentation on sites used
