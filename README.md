@@ -91,6 +91,9 @@ This is where you put the music files in .mp3 you want to be played
 ### `src/temp`
 Holds the most recentley run configerations scripts with the hard coded HackRf One values in
 
+### `src/values.txt`
+Holds a list of configerable values which can be run with -v parameter
+
 ### `src/launch.sh`
 This is created when running and deleted once the main.py script is killed. This bash script launches the xterminals at once with the chosen configeration
 
