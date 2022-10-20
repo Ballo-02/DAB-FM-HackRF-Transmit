@@ -8,7 +8,7 @@ This project was initially supposed to be run on both windows and linux but afte
 Official guidelines to follow - 'In the UK the use of any radio transmitting device is required to be either licensed or specifically exempted from licensing under the Wireless Telegraphy Act 2006 (WT Act 2006)'
 
 ### `---Disclaimer---`
-This repository contains scripts that can broadcast radio signals miles away which without a license is illegal in the UK. Therefore these scripts shall be deployed in a controlled environment for testing and results posted as shown.
+This repository contains scripts that can broadcast radio signals miles away which without a license is illegal in the UK. Therefore these scripts shall be deployed in a controlled environment for testing and results will be posted as soon.
 
 
 ## Team Members
