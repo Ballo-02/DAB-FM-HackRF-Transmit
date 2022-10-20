@@ -1,5 +1,5 @@
 # DAB-FM-HackRF-Transmit
-This project transmits 2 FM signals and 2 DAB signals (clearly) on a chosen frequency/ensemble, station name and any extra details that can be added, using HackRF One devices. It runs on 1 python3 script with 4 HackRF's plugged in at once running on Linux (Ubunutu used). You can choose if you want what you want running e.g doesnt have to be all 4.
+This project transmits 2 FM signals and 2 DAB signals (clearly) on a chosen frequency/ensemble, station name and any extra details that can be added, using HackRF One devices. It runs on 1 python3 script with 4 HackRF's plugged in at once running on Linux (Ubuntu used). You can choose if you want what you want running e.g doesn't have to be all 4.
 
 ### Author Notes
 This project was initially supposed to be run on both windows and linux but after spending some time with Syswin and other window compilers it seemed to over complicate things, as a lot of the binaries depended on linux and without great time and effort it did not seem worth it.
