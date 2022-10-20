@@ -97,7 +97,7 @@ Holds a list of configerable values which can be run with -v parameter
 ### `src/launch.sh`
 This is created when running and deleted once the main.py script is killed. This bash script launches the xterminals at once with the chosen configeration
 
-### `src/temp/config_file_real1/2.ini`
+### `src/temp/config_file_real1.ini`
 Contains the configeration for transmitting the DAB station which can be edited manually or with the script (ODR-DabMod)
 
 ### `pipes/*.fifo)`
