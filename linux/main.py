@@ -478,7 +478,7 @@ def main(fm, dab):
 
 help = '''
 Usage: sudo python3 src/main.py [options]
-sudo python3 src/main.py -i1 uranium -i3 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
+sudo python3 main.py -i1 uranium -i3 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
 
 -v                  use the settings in 'values.txt'
 -i 1/2              mp3 name for FM (without .mp3)

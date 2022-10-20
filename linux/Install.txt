@@ -1,37 +1,30 @@
-add toolame compile directory
-install apt-get install hackrf
-add hackrf_info for diagnostic
-install apt-get install make, cmake, xterm, gnuradio, gr-osmosdr, ffmpeg
+
+Repositories that can automaticallt installed
+install apt-get install hackrf, libhackrf, make, cmake, xterm, gnuradio, gr-osmosdr, ffmpeg
 
 
-
+External Repository Help
 
 SoapySDR
 sudo apt-get install cmake g++ libpython3-dev python3-numpy swig
-
 
 SoapyHackRF
 sudo add-apt-repository -y ppa:myriadrf/drivers
 sudo apt-get update
 sudo apt-get install hackrf libhackrf-dev
-
-
-
-
+sudo apt-get install libhackrf-dev
+before make of soapyhackrf
 
 ODR-DabMod
 sudo apt-get install autoconf, fftw3-dev, libuhd-dev
 
+CRC-DabMux
 when creating crc-adabmux
 -edit src/DabMux.cpp
 add '#include <sys/resource.h>'
 
 sudo apt-get install libfec-dev
 before make
-
-sudo apt-get install libhackrf-dev
-before make of soapyhackrf
-
 
 toolame 
 INLINE void putbits --> void putbits in bistream.c
