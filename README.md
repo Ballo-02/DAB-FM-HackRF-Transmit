@@ -2,7 +2,7 @@
 This project transmits 2 FM signals and 2 DAB signals (clearly) on a chosen frequency/ensemble, station name and any extra details that can be added, using HackRF One devices. It runs on 1 python3 script with 4 HackRF's plugged in at once running on Linux (Ubuntu used). You can choose if you want what you want running e.g doesn't have to be all 4.
 
 ### Author Notes
-This project was initially supposed to be run on both windows and linux but after spending some time with Syswin and other window compilers it seemed to over complicate things, as a lot of the binaries depended on linux and without great time and effort it did not seem worth it.
+This project was initially supposed to be run on both windows and linux but after spending some time with Cygwin, Mingw and other window compilers it seemed to over complicate things, as a lot of the binaries (ODR-DabMod) had specific native linux features and without great time and effort (re-code the tools and support for the compilers) it did not seem worth it.
 
 ## Guidlines
 Official guidelines to follow - 'In the UK the use of any radio transmitting device is required to be either licensed or specifically exempted from licensing under the Wireless Telegraphy Act 2006 (WT Act 2006)'
