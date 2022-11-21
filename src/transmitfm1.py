@@ -21,7 +21,7 @@ def transmit_FM_1(frequency, sample_rate, mp3_name):
     with open('src/temp/fmtx1_real.py', 'w') as file:
         file.write(filedata)
     command1 = (f"xterm -e 'sudo mpg123 -r{sample_rate} -m -s music/{mp3_name}.mp3 > pipes/stream1.fifo'")
-    #os.system(command1)
+    os.system(command1)
     command2 = (f"xterm -hold -e 'sudo /usr/bin/python3 src/temp/fmtx1_real.py'")
     os.system(command2)
 if __name__=="__main__":
@@ -37,8 +37,8 @@ if __name__=="__main__":
     for i in range(length):
         if (sys.argv[i] == '-f'):
             frequency = sys.argv[i+1]
-        elif (sys.argv[i] == 's'):
+        elif (sys.argv[i] == '-s'):
             sample_rate = sys.argv[i+1]
-        elif (sys.argv[i] == 'i'):
+        elif (sys.argv[i] == '-i'):
             mp3_name = sys.argv[i+1]
     transmit_FM_1(frequency, sample_rate, mp3_name)

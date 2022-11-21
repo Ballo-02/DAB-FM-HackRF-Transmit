@@ -20,8 +20,8 @@ def transmit_FM_2(frequency2, sample_rate, mp3_name2):
     # Write the file out again
     with open('src/temp/fmtx2_real.py', 'w') as file:
         file.write(filedata)
-    command2 = (f"xterm -e 'sudo mpg123 -r{sample_rate} -m -s ../music/{mp3_name2}.mp3 > pipes/stream2.fifo'")
-    #os.system(command2)
+    command2 = (f"xterm -e 'sudo mpg123 -r{sample_rate} -m -s music/{mp3_name2}.mp3 > pipes/stream2.fifo'")
+    os.system(command2)
     command2 = (f"xterm -hold -e 'sudo /usr/bin/python3 src/temp/fmtx2_real.py'")
     os.system(command2)
 if __name__=="__main__":
@@ -29,7 +29,6 @@ if __name__=="__main__":
         Take in the paramters and runs config funtion
     """
     #Creates the default values
-    frequency1 = '93.4'
     frequency2 = '94.4'
     sample_rate = 32000
     mp3_name2 = 'ernie'
