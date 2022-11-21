@@ -152,18 +152,23 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, dab)
     bash_script.close()
 
 
-def serial(fm, dab):
+def serial(fm, dab, default = []):
     """
         serial- finds the hackrf's serial number and assigns them to either FM or DAB as well as hardcoding these values into the scripts
 
         fm- The amount of FM stations wanting to be run
         dab - The amount of DAB stations wanting to be run
     """
-    result = os.popen('hackrf_info | grep Serial') # Get the serial numbers of te HAckRf plugged in
-    result = result.read()
-    amount=(result.split('Serial number:'))
-    amount = [y.replace('\n', '') for y in amount] # Remove unwated infomation
-    amount = [y.replace(' ', '') for y in amount]
+    if (len(default) == 0):
+        result = os.popen ('hackrf_info | grep Serial') # Get the serial numbers of te HAckRf plugged in
+        result = result.read()
+        amount=(result.split('Serial number:'))
+        amount = [y.replace('\n', '') for y in amount] # Remove unwated infomation
+        amount = [y.replace(' ', '') for y in amount]
+    else:
+        amount=['']
+        for i in range (len(default)):
+            amount.append(default[i])
     if (fm == 1):
         fm1 = amount[1] #Assigns the serial number to the variable
         print(f'fm1- {fm1}')
@@ -207,8 +212,8 @@ def serial(fm, dab):
         fm2 = amount[2]
         print(f'fm1- {fm1}')
         print(f'fm2- {fm2}')
-        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx2_real.py') #creates a new script with the serial hard coded
-        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py')
+        os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py') #creates a new script with the serial hard coded
+        os.system('sudo cp src/fmtx2_blank.py src/temp/fmtx2_real.py')
         with open('src/temp/fmtx1_real.py', 'r') as file :
             filedata = file.read()
         # Replace the target string
@@ -388,7 +393,13 @@ def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, samp
     service2 = result[37]
     frequency1 = result[39]
     frequency2 = result[41]
-    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
+    default =[]
+    default.append(result[43])
+    default.append(result[45])
+    default.append(result[47])
+    default.append(result[49])
+    serial(int(fm), int(dab), default)
+    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2,)
 
 
 def main(fm, dab):
@@ -422,7 +433,9 @@ def main(fm, dab):
     bash_script = open('src/launch.sh','a') #makes it into a bash scri[t]
     bash_script.write(f"""#!/bin/sh""")
     bash_script.close()
-    serial(int(fm), int(dab))
+
+
+    sys.argv = ['','-v']
     #If parameters are passed to the script this will take them in and change them values
     for i in range(length):
         if (sys.argv[i] == '-i' or sys.argv[i] == '-i1'):
@@ -472,6 +485,7 @@ def main(fm, dab):
     if (sys.argv[i] == '-v'): #use values.txt
         full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
     else:
+        serial(int(fm), int(dab) )
         execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 
