@@ -15,7 +15,6 @@ def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    result = (subprocess.Popen('mkfifo ./pipes/f1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     #Writes the command into a launch.sh script so multiple xterms can be run at once
     bash_script = open('src/launch.sh','a')
     bash_script.write(f"""
@@ -35,7 +34,6 @@ def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
        service - Service ID
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
-    result = (subprocess.Popen('mkfifo ./pipes/s1.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
 /usr/bin/python3 src/params1.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""") #Create python launch sript inside launch shell script passing desired params
@@ -69,7 +67,6 @@ def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    result = (subprocess.Popen('mkfifo ./pipes/f2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     #Writes the command into a launch.sh script so multiple xterms can be run at once
     bash_script = open('src/launch.sh','a')
     bash_script.write(f"""
@@ -89,7 +86,6 @@ def params_DAB_2(bit_rate,station_id,label, ensID, ensLabel, service):
        service - Service ID
     """
     #Write the command into a launch.sh script so multiple xterms can be run at once
-    result = (subprocess.Popen('mkfifo ./pipes/s2.fifo',shell=True,stdout=subprocess.PIPE)) #create fifo file
     bash_script = open('src/launch.sh', 'a')
     bash_script.write(f"""
 /usr/bin/python3 src/params2.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""")#Create python launch sript inside launch shell script passing desired params
@@ -152,7 +148,7 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, dab)
     bash_script.close()
 
 
-def serial(fm, dab, default = []):
+def serial(fm, dab, channel1, channel2, frequency1, frequency2 , default = []):
     """
         serial- finds the hackrf's serial number and assigns them to either FM or DAB as well as hardcoding these values into the scripts
 
@@ -171,7 +167,7 @@ def serial(fm, dab, default = []):
             amount.append(default[i])
     if (fm == 1):
         fm1 = amount[1] #Assigns the serial number to the variable
-        print(f'fm1- {fm1}')
+        print(f'fm1- {fm1} -on frequency {frequency1}')
         os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py') #creates a new script with the serial hard coded
         with open('src/temp/fmtx1_real.py', 'r') as file :
             filedata = file.read()
@@ -185,7 +181,7 @@ def serial(fm, dab, default = []):
         if (dab >= 1):
             amount = [y.replace('0000000000000000', '') for y in amount] #changes the serial sytax as ODR-DabMux can't use 0's
             dab1 = amount[2]
-            print(f'dab1-{dab1}')
+            print(f'dab1-{dab1}-on ensamble {channel1}')
             os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini') #creates a new script with the serial hard coded
             with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
@@ -197,7 +193,7 @@ def serial(fm, dab, default = []):
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[3]
-                print(f'dab2- {dab2}')
+                print(f'dab2- {dab2}-on ensamble {channel2}')
                 os.system('sudo cp src/config_blank2.ini src/temp/config_real2.ini')
                 with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
@@ -210,8 +206,8 @@ def serial(fm, dab, default = []):
     elif (fm ==2):
         fm1 = amount[1]
         fm2 = amount[2]
-        print(f'fm1- {fm1}')
-        print(f'fm2- {fm2}')
+        print(f'fm1- {fm1} -on frequency {frequency1}')
+        print(f'fm2- {fm2} -on frequency {frequency2}')
         os.system('sudo cp src/fmtx1_blank.py src/temp/fmtx1_real.py') #creates a new script with the serial hard coded
         os.system('sudo cp src/fmtx2_blank.py src/temp/fmtx2_real.py')
         with open('src/temp/fmtx1_real.py', 'r') as file :
@@ -234,7 +230,7 @@ def serial(fm, dab, default = []):
         if (dab >= 1):
             amount = [y.replace('0000000000000000', '') for y in amount]  #changes the serial sytax as ODR-DabMux can't use 0's
             dab1 = amount[3]
-            print(f'dab1- {dab1}')
+            print(f'dab1- {dab1}-on ensamble {channel1}')
             os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
             with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
@@ -246,7 +242,7 @@ def serial(fm, dab, default = []):
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[4]
-                print(f'dab2- {dab2}')
+                print(f'dab2- {dab2}-on ensamble {channel2}')
                 os.system('sudo cp src/config_blank2.ini src/temp/config_real2.ini')
                 with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
@@ -261,7 +257,7 @@ def serial(fm, dab, default = []):
         if (dab >= 1):
             amount = [y.replace('0000000000000000', '') for y in amount] #changes the serial sytax as ODR-DabMux can't use 0's
             dab1 = amount[1]
-            print(f'dab1-{dab1}')
+            print(f'dab1-{dab1}-on ensamble {channel1}')
             os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini') #creates a new script with the serial hard coded
             with open('src/temp/config_real1.ini', 'r') as file :
                 filedata = file.read()
@@ -273,7 +269,7 @@ def serial(fm, dab, default = []):
                 file.write(filedata)
             if (dab == 2):
                 dab2 = amount[2]
-                print(dab2)
+                print(f'dab2-{dab2}-on ensamble {channel2}')
                 os.system('sudo cp src/config_blank2.ini src/temp/config_real2.ini')
                 with open('src/temp/config_real2.ini', 'r') as file :
                     filedata = file.read()
@@ -284,8 +280,6 @@ def serial(fm, dab, default = []):
                 # Write the file out again
                 with open('src/temp/config_real2.ini', 'w') as file:
                     file.write(filedata)
-            else:
-                print('Error- Typed more than 2? (Not Capable yet)')
         else:
             print('Error- Typed more than 2? (Not Capable yet)')
 
@@ -322,7 +316,7 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rat
             transmit_FM_2(frequency1, frequency2,sample_rate1, mp3_name1, mp3_name2, False)
         print("starting 2 FM radio's")
     elif (fm == '0'):
-        print("'starting 0 FM radio's")
+        print("starting 0 FM radio's")
     else:
         print('Error- Typed more than 2? (Not Capable yet)')
     if (dab == '1'):
@@ -337,35 +331,20 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rat
         mp3tofifo_DAB_2(mp3_name4, sample_rate2, bit_rate)
         params_DAB_2(bit_rate, station_id2,label2, ensID2, ensLabel2, service2)
         transmit_DAB_2(channel2)
-        print("'starting 2 DAB radio's")
+        print("starting 2 DAB radio's")
     elif  (dab == '0'):
-        print("'starting 0 DAB radio's")
+        print("starting 0 DAB radio's")
     else:
         print('Error- Typed more than 2? (Not Capable yet)')
-    os.system('cat src/launch.sh')
+    #os.system('cat src/launch.sh')
     os.system('sh src/launch.sh') #Launches the final script
-    result2 = (subprocess.Popen('sudo rm src/launch.sh',shell=True,stdout=subprocess.PIPE)) #Deletes any outstanding launch files
+    subprocess.Popen('sudo rm src/launch.sh',shell=True,stdout=subprocess.PIPE) #Deletes any outstanding launch files
 
 
-def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
+def full_settings():
     """
         full_settings- Takes in the values from 'values.txt'for effiency when -v is passed
 
-        mp3_name1 = MP3 file name of FM 1 station
-        mp3_name2 = MP3 file name of FM 2 station
-        mp3_name3 = MP3 file name of DAB 1 station
-        mp3_name4 = MP3 file name of DAB 2 station
-        sample_rate1 = Sample rate of FM audio stream 
-        sample_rate2 = Sample rate of DAB audio stream
-        bit_rate = Bit rate of audio stream
-        station_id1 = Station ID of DAB station 1
-        station_id2 = Station ID of DAB station 2
-        label1 = Label of DAB station 1
-        label2 = Label of DAB station 2
-        channel1 = Channel ensamble used for DAB station 1
-        channel2 = Channel ensamble used for DAB station 2
-        frequency1 = Frequency of FM station 1 
-        frequency2 = Frequency of FM station 1
     """
     result = os.popen('cat src/values.txt') # Get values
     result = result.read()
@@ -398,7 +377,7 @@ def full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, samp
     default.append(result[45])
     default.append(result[47])
     default.append(result[49])
-    serial(int(fm), int(dab), default)
+    serial(int(fm), int(dab), channel1, channel2, frequency1, frequency2, default )
     execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2,)
 
 
@@ -430,12 +409,12 @@ def main(fm, dab):
     service2 = '11'
     length= len(sys.argv)
 
-    bash_script = open('src/launch.sh','a') #makes it into a bash scri[t]
+    bash_script = open('src/launch.sh','a') #makes it into a bash script
     bash_script.write(f"""#!/bin/sh""")
     bash_script.close()
 
 
-    sys.argv = ['','-v']
+
     #If parameters are passed to the script this will take them in and change them values
     for i in range(length):
         if (sys.argv[i] == '-i' or sys.argv[i] == '-i1'):
@@ -483,9 +462,9 @@ def main(fm, dab):
         elif (sys.argv[i] == '-sl2'):
             service2 = sys.argv[i+1]
     if (sys.argv[i] == '-v'): #use values.txt
-        full_settings(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
+        full_settings()
     else:
-        serial(int(fm), int(dab) )
+        serial(int(fm), int(dab), channel1, channel2, frequency1, frequency2 )
         execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 

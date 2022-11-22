@@ -21,7 +21,7 @@ def transmit_DAB_1(channel):
     # Write the file out again
     with open('src/temp/config_real1.ini', 'w') as file:
         file.write(filedata)
-    command = (f"xterm -hold -e 'sudo ./repos/ODR-DabMod/odr-dabmod src/temp/config_real1.ini'")
+    command = (f"xterm -hold -e 'sudo ./repos/ODR-DabMod/odr-dabmod -C src/temp/config_real1.ini'")
     os.system(command)
 if __name__=="__main__":
     """

@@ -41,4 +41,5 @@ if __name__=="__main__":
             sample_rate = sys.argv[i+1]
         elif (sys.argv[i] == '-i'):
             mp3_name = sys.argv[i+1]
+            time.sleep(7)
     transmit_FM_1(frequency, sample_rate, mp3_name)
