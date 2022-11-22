@@ -1,9 +1,0 @@
-How many hackrf for FM transmit- 0
-How many hackrf for DAB transmit- 1
-dab1-874461dc213e1757
-'starting 0 FM radio's
-starting 1 DAB radio
-#!/bin/sh
-/usr/bin/python3 src/convert1.py -i 800 -s 48000 -b 128 &
-/usr/bin/python3 src/params1.py -b 128 -id 1 -l Skyships-12C -eid 0xc000 -el Skyships1 -s 10 &
-/usr/bin/python3 src/transmit1.py -ch 12C 
