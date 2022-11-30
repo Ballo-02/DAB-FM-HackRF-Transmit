@@ -70,17 +70,25 @@ Usage: sudo python3 main.py [options]
 Go to the Install.txt, currenlty only working for Linux (no plans for any future OS unless high demand)
  
 ## Errors (Recommended to read)
- - Too Small, uou have to run the command 'mpg123 -r{samplerate} -m -s {mp3 name} > music/stream{1/2}' as a root user for FM stations as it's a current bug for converting your own mp3 files and so far no work around
+ - Only 3 lights (green, amber and red) show, this is due to a problem with the USB, you can click reset which should bring the next light on (and after maxium 20 seconds the transmit light should also come on) or unplug and replug the USB as well as pressing the USB reset button on the HackRF
+ 
+ - Thread error, most likely caused with a bottle neck with the USB bus you're using. You cannot use USB bus if you're wanting 2 FM + anything else 
+
+ - Too Small, you have to run the command 'mpg123 -r{samplerate} -m -s {mp3 name} > music/stream{1/2}' as a root user for FM stations as it's a current bug for converting your own mp3 files and so far no work around
  
   - If constant 'Mute' errors occur for DAB this is most likely due to sample rate problems with the file you have given specify with -s1/2
-  
-  - Thread error, most likely caused with a bottle neck with the USB bus you're using. You cannot use USB bus if you're wanting 2 FM + anything else 
  
   - Compile Errors, look at Installation.txt as that'll most likely help
  ## What's in this repository?
 
+### `start.sh`
+Bash script that goes into the correct directory and executes both 'main.py' and 'fail_safe.py' scripts as sudo
+
 ### `main.py`
 The main script to deploy 2 DAB and 2 FM signals with the default values
+
+### `fail_safe.py`
+This script runs alongside the main script which continuesley looks for failed HackRF devices and if found kills the dead script and reboots it (there might be a 20 second delay)
 
 ### `src/`
 Holds the scripts to deploy the stations depending on what parameters have been given
@@ -93,9 +101,6 @@ Holds the most recentley run configerations scripts with the hard coded HackRf O
 
 ### `src/values.txt`
 Holds a list of configerable values which can be run with -v parameter
-
-### `src/launch.sh`
-This is created when running and deleted once the main.py script is killed. This bash script launches the xterminals at once with the chosen configeration
 
 ### `src/temp/config_file_real1.ini`
 Contains the configeration for transmitting the DAB station which can be edited manually or with the script (ODR-DabMod)
