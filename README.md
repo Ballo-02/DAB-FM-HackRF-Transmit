@@ -18,7 +18,7 @@ This repository contains scripts that can broadcast radio signals miles away whi
 | Owen Ball           |   Ballo-02      |
 
 
-## Repos that need to be downlaoded
+## Repos that need to be downloaded
  - SoapySDR-
 https://github.com/pothosware/SoapySDR
  - SoapyHackRF-
