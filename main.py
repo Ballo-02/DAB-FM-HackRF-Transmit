@@ -15,11 +15,8 @@ def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    #Writes the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('src/launch.sh','a')
-    bash_script.write(f"""
-/usr/bin/python3 src/convert1.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
-    bash_script.close()
+    subprocess.Popen(["/usr/bin/python3", "src/convert1.py", "-i", mp3_name, "-s", sample_rate, "-b", bit_rate ])
+
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
     """
@@ -33,28 +30,16 @@ def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
        ensLabel - Ensamble Label
        service - Service ID
     """
-    #Write the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('src/launch.sh', 'a')
-    bash_script.write(f"""
-/usr/bin/python3 src/params1.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""") #Create python launch sript inside launch shell script passing desired params
+    subprocess.Popen(['/usr/bin/python3', "src/params1.py", "-b", bit_rate, "-id", station_id, "-l", label, "-eid", ensID, "-el", ensLabel, "-s2", service ])
 
 
-def transmit_DAB_1(channel, dab):
+def transmit_DAB_1(channel):
     """
        transmit_DAB_1- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
 
        channel - Which channel/ensamble to broadcast on
-       dab - Allows the script to know if more commands are needed
     """
-    #Write the command into a launch.sh script so multiple xterms can be run at once
-    if (dab == True):
-        add='&'
-    else:
-        add=''
-    bash_script = open('src/launch.sh', 'a')
-    bash_script.write(f"""
-/usr/bin/python3 src/transmit1.py -ch {channel} {add}""") #Create python launch sript inside launch shell script passing desired params
-    bash_script.close()
+    subprocess.Popen(["/usr/bin/python3", "src/transmit1.py", "-ch", channel])
 
 def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
     """
@@ -67,11 +52,7 @@ def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    #Writes the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('src/launch.sh','a')
-    bash_script.write(f"""
-/usr/bin/python3 src/convert2.py -i {mp3_name} -s {sample_rate} -b {bit_rate} &""")
-    bash_script.close()
+    subprocess.Popen(["/usr/bin/python3", "src/convert2.py", "-i", mp3_name, "-s", sample_rate, "-b", bit_rate ])
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_2(bit_rate,station_id,label, ensID, ensLabel, service):
     """
@@ -85,11 +66,7 @@ def params_DAB_2(bit_rate,station_id,label, ensID, ensLabel, service):
        ensLabel - Ensamble Label
        service - Service ID
     """
-    #Write the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('src/launch.sh', 'a')
-    bash_script.write(f"""
-/usr/bin/python3 src/params2.py -b {bit_rate} -id {station_id} -l {label} -eid {ensID} -el {ensLabel} -s {service} &""")#Create python launch sript inside launch shell script passing desired params
-
+    subprocess.Popen(["/usr/bin/python3", "src/params2.py", "-b", bit_rate, "-id", station_id, "-l", label, "-eid", ensID, "-el", ensLabel, "-s", service])
 
 def transmit_DAB_2(channel):
     """
@@ -97,55 +74,30 @@ def transmit_DAB_2(channel):
 
        channel - Which channel/ensamble to broadcast on
     """
-    #Write the command into a launch.sh script so multiple xterms can be run at once
-    bash_script = open('src/launch.sh', 'a')
-    bash_script.write(f"""
-/usr/bin/python3 src/transmit2.py -ch {channel}""") #Create python launch sript inside launch shell script passing desired params
-    bash_script.close()
+    subprocess.Popen(["/usr/bin/python3", "src/transmit2.py", "-ch", channel])
 
 
-
-
-def transmit_FM_1(frequency, sample_rate, mp3_name, dab):
+def transmit_FM_1(frequency, sample_rate, mp3_name):
     """
         transmit_FM_1- Transmits the FM signal with the chosen frequency, sample rate and what to play
 
         frequency- What frequency the fm channel should be on
         sample_rate- The sample whichthe frequency is wanting to be on
         mp3_name- The mp3 file that is wanting to be played
-        dab - Allows the script to know if more commands are needed
     """
-    #Adds & if dab command is also needing to be run
-    if (dab == True):
-        add='&'
-    else:
-        add=''
-    bash_script = open('src/launch.sh', 'a')
-    bash_script.write(f"""
-/usr/bin/python3 src/transmitfm1.py -f {frequency} -s {sample_rate} -i {mp3_name} {add}""") #Create python launch sript inside launch shell script passing desired params
-    bash_script.close()
+    subprocess.Popen(["/usr/bin/python3", "src/transmitfm1.py", "-f", frequency, "-s", sample_rate, "-i", mp3_name])
 
 
-def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2, dab):
+def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2):
     """
         transmit_FM_2- Transmits the FM signal twice with the chosen frequency, sample rate and what to play for both broadcasts
 
         frequency1/2- What frequency the fm channel should be on
         sample_rate1/2- The sample whichthe frequency is wanting to be on
         mp3_name1/2- The mp3 file that is wanting to be played
-        dab - Allows the script to know if more commands are needed
     """
-    #Adds & if dab command is also needing to be run
-    if (dab == True):
-        add='&'
-    else:
-        add=''
-    bash_script = open('src/launch.sh', 'a')
-    bash_script.write(f"""
-/usr/bin/python3 src/transmitfm1.py -f {frequency1} -s {sample_rate} -i {mp3_name1} &""") #Create python launch sript inside launch shell script passing desired params
-    bash_script.write(f"""
-/usr/bin/python3 src/transmitfm2.py -f {frequency2} -s {sample_rate} -i {mp3_name2} {add}""") #Create python launch sript inside launch shell script passing desired params
-    bash_script.close()
+    subprocess.Popen(["/usr/bin/python3", "src/transmitfm1.py", "-f", frequency1, "-s", sample_rate, "-i", mp3_name1])
+    subprocess.Popen(["/usr/bin/python3", "src/transmitfm2.py", "-f", frequency2, "-s", sample_rate, "-i", mp3_name2])
 
 
 def serial(fm, dab, channel1, channel2, frequency1, frequency2 , default = []):
@@ -336,10 +288,6 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rat
         print("starting 0 DAB radio's")
     else:
         print('Error- Typed more than 2? (Not Capable yet)')
-    #os.system('cat src/launch.sh')
-    os.system('sh src/launch.sh') #Launches the final script
-    subprocess.Popen('sudo rm src/launch.sh',shell=True,stdout=subprocess.PIPE) #Deletes any outstanding launch files
-
 
 def full_settings():
     """
