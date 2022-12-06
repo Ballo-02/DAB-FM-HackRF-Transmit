@@ -15,7 +15,9 @@ def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    subprocess.Popen(["/usr/bin/python3", "src/convert1.py", "-i", mp3_name, "-s", sample_rate, "-b", bit_rate ])
+    sample_rate_short = str(int(sample_rate)/1000) #Converts the file into KHz output
+    #Creates the stream that converts the mp3 to wav piped into toolame tool to make it into a mp2 stream and output the command to xterm window
+    subprocess.Popen(["sudo", "ffmpeg", "-stream_loop", "-1", "-re", "-i", f"music/{mp3_name}.mp3", "-ar", str(sample_rate), " -f", "wav", "-", "|", "sudo", "./repos/toolame-02l/toolame", "-s", str(sample_rate_short), "-D", "4", "-b", str(bit_rate), "/dev/stdin", "./pipes/f1.fifo" ])
 
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
@@ -30,7 +32,7 @@ def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
        ensLabel - Ensamble Label
        service - Service ID
     """
-    subprocess.Popen(['/usr/bin/python3', "src/params1.py", "-b", bit_rate, "-id", station_id, "-l", label, "-eid", ensID, "-el", ensLabel, "-s2", service ])
+    subprocess.Popen (["sudo", "./repos/crc-dabmux/src/CRC-DabMux", "-i",str(ensID), "-L", (ensLabel), "-A", "./pipes/f1.fifo", "-b", str(bit_rate), "-i", str(station_id), "-p", "3", "-S", "-L", label, "-i", str(service), "-C", "-i1", "-O", "fifo://pipes/s1.fifo"])
 
 
 def transmit_DAB_1(channel):
@@ -39,7 +41,20 @@ def transmit_DAB_1(channel):
 
        channel - Which channel/ensamble to broadcast on
     """
-    subprocess.Popen(["/usr/bin/python3", "src/transmit1.py", "-ch", channel])
+    #Pipes in the given fifo stream and chooses which ensamble to broadcast on using the configeration file provided. This is then outputted on an 
+    #xterm terminal
+    # Read in the file
+    with open('src/temp/config_real1.ini', 'r') as file :
+        filedata = file.read()
+
+    # Replace the target string
+    new_channel = (f'channel={channel}')
+    filedata = filedata.replace('channel=', new_channel)
+
+    # Write the file out again
+    with open('src/temp/config_real1.ini', 'w') as file:
+        file.write(filedata)
+    subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real1.in"])
 
 def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
     """
@@ -52,8 +67,8 @@ def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
        bit_rate - The  bit rate which the frequency is wanted to be transmitted on
 
     """
-    subprocess.Popen(["/usr/bin/python3", "src/convert2.py", "-i", mp3_name, "-s", sample_rate, "-b", bit_rate ])
-    #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
+    sample_rate_short = str(int(sample_rate)/1000) #Converts the file into KHz output
+    subprocess.Popen(["sudo", "ffmpeg", "-stream_loop", "-1", "-re", "-i", f"music/{mp3_name}.mp3", "-ar", str(sample_rate), " -f", "wav", "-", "|", "sudo", "./repos/toolame-02l/toolame", "-s", str(sample_rate_short), "-D", "4", "-b", str(bit_rate), "/dev/stdin", "./pipes/f2.fifo" ])
 def params_DAB_2(bit_rate,station_id,label, ensID, ensLabel, service):
     """
        params_DAB_2- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
@@ -66,15 +81,27 @@ def params_DAB_2(bit_rate,station_id,label, ensID, ensLabel, service):
        ensLabel - Ensamble Label
        service - Service ID
     """
-    subprocess.Popen(["/usr/bin/python3", "src/params2.py", "-b", bit_rate, "-id", station_id, "-l", label, "-eid", ensID, "-el", ensLabel, "-s", service])
-
+    subprocess.Popen (["sudo", "./repos/crc-dabmux/src/CRC-DabMux", "-i",str(ensID), "-L", (ensLabel), "-A", "./pipes/f2.fifo", "-b", str(bit_rate), "-i", str(station_id), "-p", "3", "-S", "-L", label, "-i", str(service), "-C", "-i1", "-O", "fifo://pipes/s2.fifo"])
 def transmit_DAB_2(channel):
     """
        transmit_DAB_2- Transmits the pipe stream given as well as choosing which broadcast ensample to boradcast on
 
        channel - Which channel/ensamble to broadcast on
     """
-    subprocess.Popen(["/usr/bin/python3", "src/transmit2.py", "-ch", channel])
+    #Pipes in the given fifo stream and chooses which ensamble to broadcast on using the configeration file provided. This is then outputted on an 
+    #xterm terminal
+    # Read in the file
+    with open('src/temp/config_real2.ini', 'r') as file :
+        filedata = file.read()
+
+    # Replace the target string
+    new_channel = (f'channel={channel}')
+    filedata = filedata.replace('channel=', new_channel)
+
+    # Write the file out again
+    with open('src/temp/config_real2.ini', 'w') as file:
+        file.write(filedata)
+    subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real2.in"])
 
 
 def transmit_FM_1(frequency, sample_rate, mp3_name):
@@ -85,7 +112,18 @@ def transmit_FM_1(frequency, sample_rate, mp3_name):
         sample_rate- The sample whichthe frequency is wanting to be on
         mp3_name- The mp3 file that is wanting to be played
     """
-    subprocess.Popen(["/usr/bin/python3", "src/transmitfm1.py", "-f", frequency, "-s", sample_rate, "-i", mp3_name])
+    # Read in the file
+    with open('src/temp/fmtx1_real.py', 'r') as file :
+        filedata = file.read()
+    # Replace the target string
+    new_frequency = (f'= freq = {frequency}e6')
+    filedata = filedata.replace('= freq =', new_frequency)
+
+    # Write the file out again
+    with open('src/temp/fmtx1_real.py', 'w') as file:
+        file.write(filedata)
+    os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name}.mp3 > pipes/stream1.fifo")
+    subprocess.Popen(["sudo", "/usr/bin/python3", "src/temp/fmtx1_real.py"])
 
 
 def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2):
@@ -96,8 +134,32 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2):
         sample_rate1/2- The sample whichthe frequency is wanting to be on
         mp3_name1/2- The mp3 file that is wanting to be played
     """
-    subprocess.Popen(["/usr/bin/python3", "src/transmitfm1.py", "-f", frequency1, "-s", sample_rate, "-i", mp3_name1])
-    subprocess.Popen(["/usr/bin/python3", "src/transmitfm2.py", "-f", frequency2, "-s", sample_rate, "-i", mp3_name2])
+     # Read in the file
+    with open('src/temp/fmtx1_real.py', 'r') as file :
+        filedata = file.read()
+    # Replace the target string
+    new_frequency = (f'= freq = {frequency}e6')
+    filedata = filedata.replace('= freq =', new_frequency)
+
+    # Write the file out again
+    with open('src/temp/fmtx1_real.py', 'w') as file:
+        file.write(filedata)
+    os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name1}.mp3 > pipes/stream1.fifo")
+    os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name2}.mp3 > pipes/stream2.fifo")
+    subprocess.Popen(["sudo", "/usr/bin/python3", "src/temp/fmtx1_real.py"])
+
+
+    # Read in the file
+    with open('src/temp/fmtx2_real.py', 'r') as file :
+        filedata = file.read()
+
+    new_frequency = (f'= freq = {frequency2}e6')
+    filedata = filedata.replace('= freq =', new_frequency)
+
+    # Write the file out again
+    with open('src/temp/fmtx2_real.py', 'w') as file:
+        file.write(filedata)
+    subprocess.Popen(["sudo", "/usr/bin/python3", "src/temp/fmtx2_real.py"])
 
 
 def serial(fm, dab, channel1, channel2, frequency1, frequency2 , default = []):
@@ -235,7 +297,17 @@ def serial(fm, dab, channel1, channel2, frequency1, frequency2 , default = []):
         else:
             print('Error- Typed more than 2? (Not Capable yet)')
 
-def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2):
+def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, 
+sample_rate1, sample_rate2, 
+bit_rate, 
+station_id1, 
+station_id2, 
+label1, label2, 
+channel1, channel2, 
+frequency1, frequency2, 
+ensID1, ensID2, 
+ensLabel1, ensLabel2, 
+service1, service2):
     """
         execute- Executes the specified function for FM and DAB
 
@@ -289,11 +361,11 @@ def execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rat
     else:
         print('Error- Typed more than 2? (Not Capable yet)')
 
-def full_settings():
+def main(fm, dab):
     """
-        full_settings- Takes in the values from 'values.txt'for effiency when -v is passed
-
+        main- Take in the paramters and displays help script if needed
     """
+    #Create the default values
     result = os.popen('cat src/values.txt') # Get values
     result = result.read()
     result = result.split(',') # Create the list to hold the values
@@ -325,42 +397,7 @@ def full_settings():
     default.append(result[45])
     default.append(result[47])
     default.append(result[49])
-    serial(int(fm), int(dab), channel1, channel2, frequency1, frequency2, default )
-    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2,)
-
-
-def main(fm, dab):
-    """
-        main- Take in the paramters and displays help script if needed
-    """
-    #Create the default values
-    mp3_name1 = '400'
-    mp3_name2 = '600'
-    mp3_name3 = '800'
-    mp3_name4 = '1k'
-    sample_rate1 = 32000
-    sample_rate2 = 48000
-    bit_rate = 128
-    station_id1 = 1
-    station_id2 = 1
-    channel1 = '12C'
-    channel2 = '13C'
-    frequency1 = '93.4'
-    frequency2 = '94.4'
-    label1 = f'Skyships-{channel1}'
-    label2 = f'Skyships-{channel2}'
-    ensID1 = '0xc000'
-    ensLabel1 = 'Skyships1'
-    service1 = '10'
-    ensID2 = '0xc001'
-    ensLabel2 = 'Skyships2'
-    service2 = '11'
     length= len(sys.argv)
-
-    bash_script = open('src/launch.sh','a') #makes it into a bash script
-    bash_script.write(f"""#!/bin/sh""")
-    bash_script.close()
-
 
 
     #If parameters are passed to the script this will take them in and change them values
@@ -409,11 +446,8 @@ def main(fm, dab):
             service1 = sys.argv[i+1]
         elif (sys.argv[i] == '-sl2'):
             service2 = sys.argv[i+1]
-    if (sys.argv[i] == '-v'): #use values.txt
-        full_settings()
-    else:
-        serial(int(fm), int(dab), channel1, channel2, frequency1, frequency2 )
-        execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
+    serial(int(fm), int(dab), channel1, channel2, frequency1, frequency2 )
+    execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 
 
