@@ -23,6 +23,8 @@ This repository contains scripts that can broadcast radio signals miles away whi
 https://github.com/pothosware/SoapySDR
  - SoapyHackRF-
 https://github.com/pothosware/SoapyHackRF
+- Libzmq-
+https://github.com/zeromq/libzmq
 - toolame (not toolame-dab or twolame)
  Please see 'Install.txt' instructions as high chance of compile errors-
 https://sourceforge.net/projects/toolame/
