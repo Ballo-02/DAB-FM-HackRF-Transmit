@@ -1,6 +1,6 @@
 
 Repositories that can automaticallt installed
-install- apt-get install hackrf libhackrf-dev make cmake xterm gnuradio gr-osmosdr ffmpeg g++ libpython3-dev python3-numpy swig autoconf fftw3-dev libuhd-dev libfec-dev
+install- apt-get install mpg123 hackrf libhackrf-dev make cmake xterm gnuradio gr-osmosdr ffmpeg g++ libpython3-dev python3-numpy swig autoconf fftw3-dev libuhd-dev libfec-dev
 
 
 External Repository Help
