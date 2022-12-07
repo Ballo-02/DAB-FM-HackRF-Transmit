@@ -64,13 +64,12 @@ def main():
                 os.system("sudo pkill -f 'fmtx1_real.py'")
                 time.sleep(1)
                 #Re-run script
-                subprocess.Popen(["/usr/bin/python3", "src/transmitfm1.py", "-f", frequency1, "-s", sample_rate1, "-i", mp3_name1],"-p")
+                subprocess.Popen(["xterm", "-hold","-e","sudo", "/usr/bin/python3", "src/temp/fmtx1_real.py"])
             elif (default[1] == fail):
                 print('fm2')
                 os.system("sudo pkill -f 'fmtx2_real.py'")
                 time.sleep(1)
-                subprocess.Popen(["/usr/bin/python3", "src/transmitfm1.py", "-f", frequency1, "-s", sample_rate1, "-i", mp3_name1,"-p"])
-                subprocess.Popen(["/usr/bin/python3", "src/transmitfm2.py", "-f", frequency2, "-s", sample_rate1, "-i", mp3_name2],"-p")
+                subprocess.Popen(["xterm", "-hold","-e","sudo", "/usr/bin/python3", "src/temp/fmtx2_real.py"])
             elif (default[2] == fail):
                 print('dab1')
                 os.system("sudo pkill -f 'odr-dabmod -C src/temp/config_real1.ini'")
@@ -79,11 +78,12 @@ def main():
                 time.sleep(1)
                 os.system("sudo pkill -f 'ffmpeg -stream_loop -1 -re -i music/800.mp3'")
                 time.sleep(1)
-                subprocess.Popen(["/usr/bin/python3", "src/convert1.py", "-i", mp3_name3, "-s", sample_rate2, "-b", bit_rate ])
+                sample_rate_short = str(int(sample_rate2)/1000) #Converts the file into KHz output
+                subprocess.Popen([f"ffmpeg -stream_loop -1 -re -i music/{mp3_name3}.mp3 -ar {sample_rate2} -f wav -| sudo ./repos/toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./pipes/f1.fifo"],shell=True)
                 time.sleep(1)
-                subprocess.Popen(['/usr/bin/python3', "src/params1.py", "-b", bit_rate, "-id", station_id1, "-l", label1, "-eid", ensID1, "-el", ensLabel1, "-s2", service1 ])
+                subprocess.Popen (["sudo", "./repos/crc-dabmux/src/CRC-DabMux", "-i",str(ensID1), "-L", (ensLabel1), "-A", "./pipes/f1.fifo", "-b", str(bit_rate), "-i", str(station_id1), "-p", "3", "-S", "-L", label1, "-i", str(service1), "-C", "-i1", "-O", "fifo://pipes/s1.fifo"])
                 time.sleep(1)
-                subprocess.Popen(["/usr/bin/python3", "src/transmit1.py", "-ch", channel1],"-p")
+                subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real1.ini"])
             elif (default[3] == fail):
                 print('dab2')
                 os.system("sudo pkill -f 'odr-dabmod -C src/temp/config_real2.ini'")
@@ -92,10 +92,11 @@ def main():
                 time.sleep(1)
                 os.system("sudo pkill -f 'ffmpeg -stream_loop -1 -re -i music/1k.mp3'")
                 time.sleep(1)
-                subprocess.Popen(["/usr/bin/python3", "src/convert2.py", "-i", mp3_name4, "-s", sample_rate2, "-b", bit_rate ])
+                sample_rate_short = str(int(sample_rate2)/1000) #Converts the file into KHz output
+                subprocess.Popen([f"ffmpeg -stream_loop -1 -re -i music/{mp3_name4}.mp3 -ar {sample_rate2} -f wav -| sudo ./repos/toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./pipes/f2.fifo"],shell=True)
                 time.sleep(1)
-                subprocess.Popen(["/usr/bin/python3", "src/params2.py", "-b", bit_rate, "-id", station_id2, "-l", label2, "-eid", ensID2, "-el", ensLabel2, "-s", service2])
+                subprocess.Popen (["sudo", "./repos/crc-dabmux/src/CRC-DabMux", "-i",str(ensID2), "-L", (ensLabel2), "-A", "./pipes/f2.fifo", "-b", str(bit_rate), "-i", str(station_id2), "-p", "3", "-S", "-L", label2, "-i", str(service2), "-C", "-i1", "-O", "fifo://pipes/s2.fifo"])
                 time.sleep(1)
-                subprocess.Popen(["/usr/bin/python3", "src/transmit2.py", "-ch", channel2],"-p")
+                subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real2.ini"])
             main()
 main()
