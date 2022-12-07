@@ -16,9 +16,7 @@ def mp3tofifo_DAB_1(mp3_name, sample_rate, bit_rate):
 
     """
     sample_rate_short = str(int(sample_rate)/1000) #Converts the file into KHz output
-    #Creates the stream that converts the mp3 to wav piped into toolame tool to make it into a mp2 stream and output the command to xterm window
-    subprocess.Popen(["sudo", "ffmpeg", "-stream_loop", "-1", "-re", "-i", f"music/{mp3_name}.mp3", "-ar", str(sample_rate), " -f", "wav", "-", "|", "sudo", "./repos/toolame-02l/toolame", "-s", str(sample_rate_short), "-D", "4", "-b", str(bit_rate), "/dev/stdin", "./pipes/f1.fifo" ])
-
+    subprocess.Popen([f"ffmpeg -stream_loop -1 -re -i music/{mp3_name}.mp3 -ar {sample_rate} -f wav -| sudo ./repos/toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./pipes/f1.fifo"],shell=True)
     #Find mp3 file and create wav file to output results to toolame to make it into an mp2 format piped into a fifo file
 def params_DAB_1(bit_rate,station_id,label, ensID, ensLabel, service):
     """
@@ -54,7 +52,7 @@ def transmit_DAB_1(channel):
     # Write the file out again
     with open('src/temp/config_real1.ini', 'w') as file:
         file.write(filedata)
-    subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real1.in"])
+    subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real1.ini"])
 
 def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
     """
@@ -68,7 +66,7 @@ def mp3tofifo_DAB_2(mp3_name, sample_rate, bit_rate):
 
     """
     sample_rate_short = str(int(sample_rate)/1000) #Converts the file into KHz output
-    subprocess.Popen(["sudo", "ffmpeg", "-stream_loop", "-1", "-re", "-i", f"music/{mp3_name}.mp3", "-ar", str(sample_rate), " -f", "wav", "-", "|", "sudo", "./repos/toolame-02l/toolame", "-s", str(sample_rate_short), "-D", "4", "-b", str(bit_rate), "/dev/stdin", "./pipes/f2.fifo" ])
+    subprocess.Popen([f"ffmpeg -stream_loop -1 -re -i music/{mp3_name}.mp3 -ar {sample_rate} -f wav -| sudo ./repos/toolame-02l/toolame -s {sample_rate_short} -D 4 -b {bit_rate} /dev/stdin ./pipes/f2.fifo"],shell=True)
 def params_DAB_2(bit_rate,station_id,label, ensID, ensLabel, service):
     """
        params_DAB_2- Adds paramters to the given stream such as label, station id, proection level etc. This stream has come in from a previous ffmpg/toolame
@@ -101,7 +99,7 @@ def transmit_DAB_2(channel):
     # Write the file out again
     with open('src/temp/config_real2.ini', 'w') as file:
         file.write(filedata)
-    subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real2.in"])
+    subprocess.Popen(["sudo", "./repos/ODR-DabMod/odr-dabmod", "-C", "src/temp/config_real2.ini"])
 
 
 def transmit_FM_1(frequency, sample_rate, mp3_name):
@@ -122,8 +120,9 @@ def transmit_FM_1(frequency, sample_rate, mp3_name):
     # Write the file out again
     with open('src/temp/fmtx1_real.py', 'w') as file:
         file.write(filedata)
-    os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name}.mp3 > pipes/stream1.fifo")
-    subprocess.Popen(["sudo", "/usr/bin/python3", "src/temp/fmtx1_real.py"])
+    os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name}.mp3 > pipes/stream1.fifo") # Create the stream to play and give permissions to allow reading from
+    os.popen(f'sudo chmod u+=rwx pipes/*')
+    subprocess.Popen(["xterm", "-hold","-e","sudo", "/usr/bin/python3", "src/temp/fmtx1_real.py"])
 
 
 def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2):
@@ -138,15 +137,16 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2):
     with open('src/temp/fmtx1_real.py', 'r') as file :
         filedata = file.read()
     # Replace the target string
-    new_frequency = (f'= freq = {frequency}e6')
+    new_frequency = (f'= freq = {frequency1}e6')
     filedata = filedata.replace('= freq =', new_frequency)
 
     # Write the file out again
     with open('src/temp/fmtx1_real.py', 'w') as file:
         file.write(filedata)
-    os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name1}.mp3 > pipes/stream1.fifo")
+    os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name1}.mp3 > pipes/stream1.fifo") # Create the stream to play and give permissions to allow reading from
     os.system(f"sudo mpg123 -r{sample_rate} -m -s music/{mp3_name2}.mp3 > pipes/stream2.fifo")
-    subprocess.Popen(["sudo", "/usr/bin/python3", "src/temp/fmtx1_real.py"])
+    os.popen(f'sudo chmod u+=rwx pipes/*')
+    subprocess.Popen(["xterm", "-hold","-e","sudo", "/usr/bin/python3", "src/temp/fmtx1_real.py"])
 
 
     # Read in the file
@@ -159,26 +159,19 @@ def transmit_FM_2(frequency1, frequency2,sample_rate, mp3_name1, mp3_name2):
     # Write the file out again
     with open('src/temp/fmtx2_real.py', 'w') as file:
         file.write(filedata)
-    subprocess.Popen(["sudo", "/usr/bin/python3", "src/temp/fmtx2_real.py"])
+    subprocess.Popen(["xterm", "-hold","-e","sudo", "/usr/bin/python3", "src/temp/fmtx2_real.py"])
 
 
-def serial(fm, dab, channel1, channel2, frequency1, frequency2 , default = []):
+def serial(fm, dab, channel1, channel2, frequency1, frequency2 , default):
     """
         serial- finds the hackrf's serial number and assigns them to either FM or DAB as well as hardcoding these values into the scripts
 
         fm- The amount of FM stations wanting to be run
         dab - The amount of DAB stations wanting to be run
     """
-    if (len(default) == 0):
-        result = os.popen ('hackrf_info | grep Serial') # Get the serial numbers of te HAckRf plugged in
-        result = result.read()
-        amount=(result.split('Serial number:'))
-        amount = [y.replace('\n', '') for y in amount] # Remove unwated infomation
-        amount = [y.replace(' ', '') for y in amount]
-    else:
-        amount=['']
-        for i in range (len(default)):
-            amount.append(default[i])
+    amount=['']
+    for i in range (len(default)):
+        amount.append(default[i])
     if (fm == 1):
         fm1 = amount[1] #Assigns the serial number to the variable
         print(f'fm1- {fm1} -on frequency {frequency1}')
@@ -329,15 +322,9 @@ service1, service2):
     """
     if (fm == '1'):
         print('starting 1 FM radio')
-        if (int(dab) > 0):
-            transmit_FM_1(frequency1, sample_rate1, mp3_name1, True)
-        else:
-            transmit_FM_1(frequency1, sample_rate1, mp3_name1, False)
+        transmit_FM_1(frequency1, sample_rate1, mp3_name1)
     elif (fm == '2'):
-        if (int(dab) > 0):
-            transmit_FM_2(frequency1, frequency2,sample_rate1, mp3_name1, mp3_name2, True)
-        else:
-            transmit_FM_2(frequency1, frequency2,sample_rate1, mp3_name1, mp3_name2, False)
+        transmit_FM_2(frequency1, frequency2,sample_rate1, mp3_name1, mp3_name2)
         print("starting 2 FM radio's")
     elif (fm == '0'):
         print("starting 0 FM radio's")
@@ -347,11 +334,11 @@ service1, service2):
         print('starting 1 DAB radio')
         mp3tofifo_DAB_1(mp3_name3, sample_rate2, bit_rate)
         params_DAB_1(bit_rate,station_id1,label1, ensID1, ensLabel1, service1)
-        transmit_DAB_1(channel1, False)
+        transmit_DAB_1(channel1)
     elif (dab == '2'):
         mp3tofifo_DAB_1(mp3_name3, sample_rate2, bit_rate)
         params_DAB_1(bit_rate,station_id1,label1, ensID1, ensLabel1, service1)
-        transmit_DAB_1(channel1, True)
+        transmit_DAB_1(channel1)
         mp3tofifo_DAB_2(mp3_name4, sample_rate2, bit_rate)
         params_DAB_2(bit_rate, station_id2,label2, ensID2, ensLabel2, service2)
         transmit_DAB_2(channel2)
@@ -393,10 +380,6 @@ def main(fm, dab):
     frequency1 = result[39]
     frequency2 = result[41]
     default =[]
-    default.append(result[43])
-    default.append(result[45])
-    default.append(result[47])
-    default.append(result[49])
     length= len(sys.argv)
 
 
@@ -446,7 +429,26 @@ def main(fm, dab):
             service1 = sys.argv[i+1]
         elif (sys.argv[i] == '-sl2'):
             service2 = sys.argv[i+1]
-    serial(int(fm), int(dab), channel1, channel2, frequency1, frequency2 )
+    if (sys.argv[i] == '-v'):
+        # Added dedicated serial values
+        default.append(result[43])
+        default.append(result[45])
+        default.append(result[47])
+        default.append(result[49])
+    else:
+        # Search for HackRF serial numebrs anad assign them to stations
+        result = os.popen ('hackrf_info | grep Serial') # Get the serial numbers of te HAckRf plugged in
+        result = result.read()
+        default=(result.split('Serial number:'))
+        default = [y.replace('\n', '') for y in default] # Remove unwated infomation
+        default = [y.replace(' ', '') for y in default]
+    # Create pipes and give them read/write/execute permissions 
+    os.popen(f'sudo chmod u+=rwx pipes')
+    for i in range(1,3):
+        os.popen(f'sudo mkfifo ./pipes/f{i}.fifo')
+        os.popen(f'sudo mkfifo ./pipes/s{i}.fifo')
+    os.popen(f'sudo chmod u+=rwx pipes/*')
+    serial(int(fm), int(dab), channel1, channel2, frequency1, frequency2, default )
     execute(mp3_name1, mp3_name2, mp3_name3, mp3_name4, sample_rate1, sample_rate2, bit_rate, station_id1, station_id2, label1, label2, channel1, channel2, frequency1, frequency2, ensID1, ensID2, ensLabel1, ensLabel2, service1, service2)
 
 
@@ -455,7 +457,7 @@ help = '''
 Usage: sudo python3 src/main.py [options]
 sudo python3 main.py -i1 uranium -i3 jungle -s 48000 -b 128 -ch1 11C -id1 1 -l1 'Ballo-02'
 
--v                  use the settings in 'values.txt'
+-v                  use HackRF serial values
 -i 1/2              mp3 name for FM (without .mp3)
 -i 3/4              mp3 name for DAB (without .mp3)
 -s 1/2              sample rate (FM/DAB)
