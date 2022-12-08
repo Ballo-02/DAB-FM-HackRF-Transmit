@@ -56,7 +56,7 @@ class fmtx1(gr.top_block):
                 taps=None,
                 fractional_bw=None)
         self.osmosdr_sink_0 = osmosdr.sink(
-            args="numchan=" + str(1) + " " + 'hackrf=0000000000000000874461dc25a38957'
+            args="numchan=" + str(1) + " " + 'hackrf='
         )
         self.osmosdr_sink_0.set_sample_rate(rf_samp_rate)
         self.osmosdr_sink_0.set_center_freq(freq, 0)

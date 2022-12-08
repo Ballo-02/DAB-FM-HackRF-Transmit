@@ -36,7 +36,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 93.4e6
+    value: 96.2e6
   states:
     bus_sink: false
     bus_source: false
@@ -131,7 +131,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/anyone/Documents/radio/DAB-FM-HackRF-Transmit/linux/pipes/stream1.fifo
+    file: /home/owen/Documents/DAB-FM-HackRF-Transmit/pipes/stream1.fifo
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -236,7 +236,7 @@ blocks:
     ant7: ''
     ant8: ''
     ant9: ''
-    args: hackrf=0000000000000000874461dc25a38957
+    args: hackrf=0000000000000000a06063c825744b5f
     bb_gain0: '20'
     bb_gain1: '20'
     bb_gain10: '20'
