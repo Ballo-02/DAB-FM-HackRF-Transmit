@@ -224,144 +224,142 @@ def serial(fm, dab, channel0, channel1, frequency0, frequency1 , default):
         fm- The amount of FM stations wanting to be run
         dab - The amount of DAB stations wanting to be run
     """
-    amount=['']
-    for i in range (len(default)):
-        amount.append(default[i])
     if (fm == 1):
-        fm0 = amount[1] #Assigns the serial number to the variable
+        fm0 = default[1] #Assigns the serial number to the variable
         print(f'fm0- {fm0} -on frequency {frequency0}')
         os.system('sudo cp src/fmtx_blank.py src/temp/fmtx0_real.py') #creates a new script with the serial hard coded
+        os.popen(f'sudo chmod u+=rwx src/temp/fmtx0_real.py')
         with open('src/temp/fmtx0_real.py', 'r') as file :
             filedata = file.read()
         # Replace the target string
         new_serial = (f'hackrf={fm0}')
-        filedata0 = filedata.replace('hackrf=', new_serial)
-        filedata1 = filedata.replace('pipes', 'pipes/stream0.fifo')
+        filedata = filedata.replace('hackrf=', new_serial)
+        filedata = filedata.replace('pipes', 'pipes/stream0.fifo')
 
         # Write the file out again
         with open('src/temp/fmtx0_real.py', 'w') as file:
-            file.write(filedata0)
-            file.write(filedata1)
+            file.write(filedata)
         if (dab >= 1):
-            amount = [y.replace('0000000000000000', '') for y in amount] #changes the serial sytax as ODR-DabMux can't use 0's
-            dab0 = amount[2]
+            default = [y.replace('0000000000000000', '') for y in default] #changes the serial sytax as ODR-DabMux can't use 0's
+            dab0 = default[2]
             print(f'dab0-{dab0}-on ensamble {channel0}')
             os.system('sudo cp src/config_blank.ini src/temp/config_real0.ini') #creates a new script with the serial hard coded
+            os.popen(f'sudo chmod u+=rwx src/temp/config_real0.ini')
             with open('src/temp/config_real0.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
             new_serial = (f'device=serial={dab0}')
-            filedata0 = filedata.replace('device=serial=', new_serial)
-            filedata1 = filedata.replace('pipes', './pipes/s1.fifo')
+            filedata = filedata.replace('device=serial=', new_serial)
+            filedata = filedata.replace('pipes', './pipes/s0.fifo')
             # Write the file out again
             with open('src/temp/config_real0.ini', 'w') as file:
-                file.write(filedata0)
-                file.write(filedata0)
+                file.write(filedata)
             if (dab == 2):
-                dab1 = amount[3]
+                dab1 = default[3]
                 print(f'dab1- {dab1}-on ensamble {channel1}')
                 os.system('sudo cp src/config_blank.ini src/temp/config_real1.ini')
+                os.popen(f'sudo chmod u+=rwx src/temp/config_real1.ini')
                 with open('src/temp/config_real1.ini', 'r') as file :
                     filedata = file.read()
                 # Replace the target string
                 new_serial = (f'device=serial={dab1}')
-                filedata0 = filedata.replace('device=serial=', new_serial)
-                filedata1 = filedata.replace('pipes', './pipes/s2.fifo')
+                filedata = filedata.replace('device=serial=', new_serial)
+                filedata = filedata.replace('pipes', './pipes/s1.fifo')
                 # Write the file out again
                 with open('src/temp/config_real1.ini', 'w') as file:
-                    file.write(filedata0)
-                    file.write(filedata1)
+                    file.write(filedata)
     elif (fm ==2):
-        fm0 = amount[1]
-        fm1 = amount[2]
+        fm0 = default[1]
+        fm1 = default[2]
         print(f'fm0- {fm0} -on frequency {frequency0}')
         print(f'fm1- {fm1} -on frequency {frequency1}')
         os.system('sudo cp src/fmtx_blank.py src/temp/fmtx0_real.py') #creates a new script with the serial hard coded
         os.system('sudo cp src/fmtx_blank.py src/temp/fmtx1_real.py')
+        os.popen(f'sudo chmod u+=rwx src/temp/fmtx0_real.py')
+        os.popen(f'sudo chmod u+=rwx src/temp/fmtx1_real.py')
         with open('src/temp/fmtx0_real.py', 'r') as file :
             filedata = file.read()
         # Replace the target string
         new_serial = (f'hackrf={fm0}')
-        filedata0 = filedata.replace('hackrf=', new_serial)
-        filedata1 = filedata.replace('pipes', 'pipes/stream0.fifo')
+        filedata = filedata.replace('hackrf=', new_serial)
+        filedata = filedata.replace('pipes', 'pipes/stream0.fifo')
         # Write the file out again
         with open('src/temp/fmtx0_real.py', 'w') as file:
-            file.write(filedata0)
-            file.write(filedata1)
+            file.write(filedata)
 
 
         with open('src/temp/fmtx1_real.py', 'r') as file :
             filedata = file.read()
         new_serial = (f'hackrf={fm1}')
-        filedata0 = filedata.replace('hackrf=', new_serial)
-        filedata1 = filedata.replace('pipes', 'pipes/stream1.fifo')
+        filedata = filedata.replace('hackrf=', new_serial)
+        filedata = filedata.replace('pipes', 'pipes/stream1.fifo')
         # Write the file out again
         with open('src/temp/fmtx1_real.py', 'w') as file:
-            file.write(filedata0)
-            file.write(filedata1)
+            file.write(filedata)
         if (dab >= 1):
-            amount = [y.replace('0000000000000000', '') for y in amount]  #changes the serial sytax as ODR-DabMux can't use 0's
-            dab0 = amount[3]
+            default = [y.replace('0000000000000000', '') for y in default]  #changes the serial sytax as ODR-DabMux can't use 0's
+            dab0 = default[3]
             print(f'dab0- {dab0}-on ensamble {channel0}')
             os.system('sudo cp src/config_blank.ini src/temp/config_real0.ini')
+            os.popen(f'sudo chmod u+=rwx src/temp/config_real0.ini')
             with open('src/temp/config_real0.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
             new_serial = (f'device=serial={dab0}')
-            filedata0 = filedata.replace('device=serial=', new_serial)
-            filedata1 = filedata.replace('pipes', './pipes/s1.fifo')
+            filedata = filedata.replace('device=serial=', new_serial)
+            filedata = filedata.replace('pipes', './pipes/s0.fifo')
             # Write the file out again
             with open('src/temp/config_real0.ini', 'w') as file:
-                file.write(filedata0)
-                file.write(filedata1)
+                file.write(filedata)
             if (dab == 2):
-                dab1 = amount[4]
+                dab1 = default[4]
                 print(f'dab1- {dab1}-on ensamble {channel1}')
                 os.system('sudo cp src/config_blank1.ini src/temp/config_real1.ini')
+                os.popen(f'sudo chmod u+=rwx src/temp/config_real1.ini')
                 with open('src/temp/config_real1.ini', 'r') as file :
                     filedata = file.read()
                 # Replace the target string
                 new_serial = (f'device=serial={dab1}')
-                filedata0 = filedata.replace('device=serial=', new_serial)
-                filedata1 = filedata.replace('pipes', './pipes/s2.fifo')
+                filedata = filedata.replace('device=serial=', new_serial)
+                filedata = filedata.replace('pipes', './pipes/s1.fifo')
 
                 # Write the file out again
                 with open('src/temp/config_real1.ini', 'w') as file:
-                    file.write(filedata0)
-                    file.write(filedata1)
+                    file.write(filedata)
     else:
         if (dab >= 1):
-            amount = [y.replace('0000000000000000', '') for y in amount] #changes the serial sytax as ODR-DabMux can't use 0's
-            dab0 = amount[1]
+            default = [y.replace('0000000000000000', '') for y in default] #changes the serial sytax as ODR-DabMux can't use 0's
+            dab0 = default[1]
             print(f'dab0-{dab0}-on ensamble {channel0}')
             os.system('sudo cp src/config_blank.ini src/temp/config_real0.ini') #creates a new script with the serial hard coded
+            os.popen(f'sudo chmod u+=rwx src/temp/config_real0.ini')
             with open('src/temp/config_real0.ini', 'r') as file :
                 filedata = file.read()
             # Replace the target string
             new_serial = (f'device=serial={dab0}')
-            filedata0 = filedata.replace('device=serial=', new_serial)
-            filedata1 = filedata.replace('pipes', './pipes/s1.fifo')
+            filedata = filedata.replace('device=serial=', new_serial)
+            filedata = filedata.replace('pipes', './pipes/s0.fifo')
             # Write the file out again
             with open('src/temp/config_real0.ini', 'w') as file:
-                file.write(filedata0)
-                file.write(filedata1)
+                file.write(filedata)
             if (dab == 2):
-                dab1 = amount[2]
+                dab1 = default[2]
                 print(f'dab1-{dab1}-on ensamble {channel1}')
                 os.system('sudo cp src/config_blank.ini src/temp/config_real1.ini')
+                os.popen(f'sudo chmod u+=rwx src/temp/config_real1.ini')
                 with open('src/temp/config_real1.ini', 'r') as file :
                     filedata = file.read()
                 # Replace the target string
                 new_serial = (f'device=serial={dab1}')
-                filedata0 = filedata.replace('device=serial=', new_serial)
-                filedata1 = filedata.replace('pipes', './pipes/s2.fifo')
+                filedata = filedata.replace('device=serial=', new_serial)
+                filedata = filedata.replace('pipes', './pipes/s1.fifo')
 
                 # Write the file out again
                 with open('src/temp/config_real1.ini', 'w') as file:
-                    file.write(filedata0)
-                    file.write(filedata1)
+                    file.write(filedata)
         else:
             print('Error- Typed more than 2? (Not Capable yet)')
+
 
 def execute(mp3_name0, mp3_name1, mp3_name2, mp3_name3, 
 sample_rate0, sample_rate1, 
@@ -522,7 +520,7 @@ def main(fm, dab):
         default = [y.replace(' ', '') for y in default]
     # Create pipes and give them read/write/execute permissions 
     os.popen(f'sudo chmod u+=rwx pipes')
-    for i in range(1,3):
+    for i in range(2):
         subprocess.run( ["sudo", "mkfifo", f"./pipes/f{i}.fifo"], capture_output=True )
         subprocess.run( ["sudo", "mkfifo", f"./pipes/s{i}.fifo"], capture_output=True )
     os.popen(f'sudo chmod u+=rwx pipes/*')
