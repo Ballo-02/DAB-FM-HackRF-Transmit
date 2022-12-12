@@ -15,23 +15,23 @@ chmod 777 -R *
 cd crc-dabmux &&
 sed -i '27i #include <sys/resource.h>' src/DabMux.cpp
 
-# ./configure; make; make install
+./configure; make; make install
 
-# cd libzmq &&
-# ./autogen.sh; ./configure; make; make install
+cd libzmq &&
+./autogen.sh; ./configure; make; make install
 
-# cd ODR-DabMod &&
-# ./bootstrap.sh; ./configure; make; make install
+cd ODR-DabMod &&
+./bootstrap.sh; ./configure; make; make install
 
-# cd SoapySDR &&
-# mkdir build; cd build; cmake ..; make -j4; sudo make install; sudo ldconfig
+cd SoapySDR &&
+mkdir build; cd build; cmake ..; make -j4; sudo make install; sudo ldconfig
 
-# sudo add-apt-repository -y ppa:myriadrf/drivers
-# sudo apt-get update
+sudo add-apt-repository -y ppa:myriadrf/drivers
+sudo apt-get update
 
-# cd SoapyHackRF &&
-# mkdir build; cd build; cmake ..; make -j4; sudo make install; sudo ldconfig
+cd SoapyHackRF &&
+mkdir build; cd build; cmake ..; make -j4; sudo make install; sudo ldconfig
 
-# cd toolame-02l &&
-# make clean
-# make
+cd toolame-02l &&
+make clean
+make
